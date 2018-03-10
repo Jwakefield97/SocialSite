@@ -9,7 +9,7 @@ app.set("view engine","pug");//sets view engine
 app.set("views", "./views");  //tells view engine where to look for templates 
 
 app.get("/",(req,res)=>{
-    res.render("master-template.pug"); 
+    res.render("login.pug"); 
 }); 
 
 socketIo.on("connection",(socket)=>{
