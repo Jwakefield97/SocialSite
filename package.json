@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node node_modules/nodemon/bin/nodemon.js server.js",
-    "setup": "cp node_modules/bootstrap/dist/css/bootstrap.min.css resources/css && cp node_modules/jquery/jquery.min.js resources/js && cp node_modules/bootstrap/dist/js/bootstrap.bundle.min.js resources/js && cp node_modules/socket.io-client/dist/socket.io.min.js resources/js",
+    "setup": "cp node_modules/bootstrap/dist/css/bootstrap.min.css resources/css && cp node_modules/jquery/dist/jquery.min.js resources/js && cp node_modules/bootstrap/dist/js/bootstrap.bundle.min.js resources/js && cp node_modules/socket.io-client/dist/socket.io.min.js resources/js",
     "clean": "rm resources/css/bootstrap.min.css && rm resources/js/bootstrap.bundle.min.js && rm resources/js/jquery.min.js && rm resources/js/socket.io.min.js"
   },
   "repository": {
@@ -22,7 +22,7 @@
     "bootstrap": "^4.0.0",
     "express": "^4.16.2",
     "http": "0.0.0",
-    "jquery": "^1.9.1",
+    "jquery": "^3.3.1",
     "mysql": "^2.15.0",
     "nodemon": "^1.17.1",
     "pug": "^2.0.1",
