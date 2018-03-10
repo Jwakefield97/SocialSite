@@ -1,6 +1,6 @@
 node_modules/
 npm-debug*
 resources/js/jquery.min.js
-resrouces/js/bootstrap.bundle.min.js
+resources/js/bootstrap.bundle.min.js
 resources/js/socket.io.min.js
 resources/css/bootstrap.min.css
