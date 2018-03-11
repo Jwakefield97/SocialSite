@@ -27,7 +27,7 @@ app.use(expressSession({ secret: 'this-is-a-secret-token', cookie: { maxAge: 600
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json()); 
 
-app.use("/home", homepageRoutes); 
+app.use("/home", feedRoutes); 
 
 app.get("/",(req,res)=>{
     if(req.session.email){
