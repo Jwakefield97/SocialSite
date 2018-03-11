@@ -14,7 +14,7 @@ const express = require("express"),
     bcrypt = require("bcrypt"), // used for encryption 
     saltRounds = 10,//num of salting rounds
     querybuilder = require("./modules/querybuilder.js"),
-    homepageRoutes = require("./routes/homepageRoutes.js"),
+    feedRoutes = require("./routes/feedRoutes.js"),
 	expressSession = require("express-session"); //used for logins and sessions;   
 
 app.use(express.static("resources"));
