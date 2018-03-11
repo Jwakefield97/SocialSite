@@ -1,0 +1,29 @@
+extends master-template.pug 
+
+block head 
+    title Sign up 
+block body 
+    div(class="row text-center")
+        div(class="col-4 mx-auto")
+            form(id="loginForm",class="form-signin")
+                h1(class="h3 mb-3 font-weight-normal") Create an account
+                label(for="inputEmail",class="sr-only") Email address
+                input(type="email", id="inputEmail", class="form-control", placeholder="Email address" required)
+                label(for="inputPassword",class="sr-only") Password
+                input(type="password", id="inputPassword", class="form-control", placeholder="Password" required)       
+                label(for="firstName",class="sr-only") FirstName
+                input(type="text", id="firstName", class="form-control", placeholder="FirstName" required)
+                label(for="lastName",class="sr-only") LastName
+                input(type="text", id="lastName", class="form-control", placeholder="LastName" required)
+                button(class="btn btn-lg btn-primary btn-block" type="submit") Create account 
+            a(href="/")
+                button(class="btn btn-lg btn-primary btn-block") Sign in 
+    script.
+        $(document).ready(()=>{
+            $("#loginForm").submit((evt)=>{
+                evt.preventDefault(); 
+                $.ajax({type:"POST",url:"/sign-up-attempt", data: {email: $("#inputEmail").val(), password: $("#inputPassword").val(), firstName: $("#firstName").val(), lastName: $("#lastName").val()}, success: (res)=>{
+                    console.log(res); 
+                }}); 
+            }); 
+        }); 

@@ -1,7 +1,7 @@
 extends master-template.pug 
 
 block head 
-
+    title Login
 block body 
     div(class="row text-center")
         div(class="col-4 mx-auto")
@@ -12,6 +12,9 @@ block body
                 label(for="inputPassword",class="sr-only") Password
                 input(type="password", id="inputPassword", class="form-control", placeholder="Password" required)
                 button(class="btn btn-lg btn-primary btn-block" type="submit") Sign in 
+            a(href="/sign-up")
+                button(class="btn btn-lg btn-primary btn-block") Create account 
+                
     script.
         $(document).ready(()=>{
             $("#loginForm").submit((evt)=>{
