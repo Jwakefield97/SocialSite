@@ -41,21 +41,26 @@ app.post("/sign-up-attempt", (req,res)=>{
     attempt.password = attempt.password.trim(); 
     bcrypt.hash(attempt.password, saltRounds, (err, hash)=> {
        if(!err){
-           attempt.password = hash; 
-           dbconn.connect((err)=>{
-                if(!err){
-                    dbconn.query(querybuilder.createUser(attempt), (err,result)=>{
-                        console.log(result);
-                        if(err){
-                           resMsg = "error";  
-                           console.log(err); 
-                        }
-                    }); 
-                }else{
-                    resMsg = "error"; 
+            attempt.password = hash; 
+            dbconn.query(querybuilder.findUser(attempt.email), (err,result)=>{
+                if(err){
+                    resMsg = "error";  
                     console.log(err); 
+                }else{
+                    if(result.length === 0){
+                        console.log("creating user"); 
+                        dbconn.query(querybuilder.createUser(attempt), (err,result)=>{
+                            if(err){
+                                resMsg = "error"; 
+                                console.log(err); 
+                            }
+                        }); 
+                    }else{
+                        console.log("user exists");
+                        resMsg = "registered"; 
+                    }
                 }
-           }); 
+            });   
        }else{
             resMsg = "error"; 
             console.log(err); 
