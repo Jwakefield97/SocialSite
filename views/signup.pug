@@ -7,6 +7,7 @@ block body
         div(class="col-4 mx-auto")
             form(id="loginForm",class="form-signin")
                 h1(class="h3 mb-3 font-weight-normal") Create an account
+                div(id="errorMessages",class="alert alert-danger hide") 
                 label(for="inputEmail",class="sr-only") Email address
                 input(type="email", id="inputEmail", class="form-control", placeholder="Email address" required)
                 label(for="inputPassword",class="sr-only") Password
@@ -23,7 +24,22 @@ block body
             $("#loginForm").submit((evt)=>{
                 evt.preventDefault(); 
                 $.ajax({type:"POST",url:"/sign-up-attempt", data: {email: $("#inputEmail").val(), password: $("#inputPassword").val(), firstName: $("#firstName").val(), lastName: $("#lastName").val()}, success: (res)=>{
-                    console.log(res); 
+                    if(res === "success"){
+                        window.location = "/"; 
+                    }else if(res === "registered"){
+                        console.log("already registered"); 
+                        $("#errorMessages").text("This email is taken. Please select another.")
+                        $("#errorMessages").removeClass("hide"); 
+                        setTimeout(()=>{
+                            $("#errorMessages").addClass("hide"); 
+                        },10000)
+                    }else{
+                        $("#errorMessages").text("There was an error. Please try again.")
+                        $("#errorMessages").removeClass("hide"); 
+                        setTimeout(()=>{
+                            $("#errorMessages").addClass("hide"); 
+                        },10000) 
+                    }
                 }}); 
             }); 
         }); 
