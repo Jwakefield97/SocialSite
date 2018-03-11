@@ -13,23 +13,34 @@ const express = require("express"),
     }),
     bcrypt = require("bcrypt"), // used for encryption 
     saltRounds = 10,//num of salting rounds
-    querybuilder = require("./modules/querybuilder.js");   
+    querybuilder = require("./modules/querybuilder.js"),
+    homepageRoutes = require("./routes/homepageRoutes.js"),
+	expressSession = require("express-session"); //used for logins and sessions;   
 
 app.use(express.static("resources"));
 
 app.set("view engine","pug");//sets view engine  
 app.set("views", "./views");  //tells view engine where to look for templates 
 
+
+app.use(expressSession({ secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 }}));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json()); 
 
+app.use("/home", homepageRoutes); 
+
 app.get("/",(req,res)=>{
-    res.render("login.pug"); 
+    if(req.session.email){
+        res.redirect("/index"); 
+    }else{
+        res.render("login.pug"); 
+    }
 }); 
 
-app.get("/index", (req,res)=>{
-    res.render("index.pug"); 
-});     
+app.get('/logout', (req,res)=>{
+    req.session.destroy(); 
+    res.redirect("/"); 
+});    
 
 app.get("/sign-up",(req,res)=>{
     res.render("signup.pug"); 
@@ -75,7 +86,9 @@ app.post("/login-attempt",(req,res)=>{
                     res.send("error"); 
                 }else{
                     if(check === true){
+                        req.session.email = result[0].Email; //set session id 
                         res.send("success"); 
+
                     }else{
                         res.send("wrong"); 
                     }
