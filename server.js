@@ -15,10 +15,6 @@ const express = require("express"),
     saltRounds = 10,//num of salting rounds
     querybuilder = require("./modules/querybuilder.js");   
 
-    // bcrypt.compare("jake", hash, function(err, res) { how to compare passwords
-    //     console.log(res)
-    // });
-
 app.use(express.static("resources"));
 
 app.set("view engine","pug");//sets view engine  
@@ -30,6 +26,10 @@ app.use(bodyParser.json());
 app.get("/",(req,res)=>{
     res.render("login.pug"); 
 }); 
+
+app.get("/index", (req,res)=>{
+    res.render("index.pug"); 
+});     
 
 app.get("/sign-up",(req,res)=>{
     res.render("signup.pug"); 
@@ -68,7 +68,23 @@ app.post("/sign-up-attempt", (req,res)=>{
 
 app.post("/login-attempt",(req,res)=>{
     let attempt = req.body;  
-    
+    dbconn.query(querybuilder.findUser(attempt.email), (err,result)=>{
+        if(result.length === 1){
+            bcrypt.compare(attempt.password.toString().trim(), result[0].Password, function(err, check) { 
+                if(err){
+                    res.send("error"); 
+                }else{
+                    if(check === true){
+                        res.send("success"); 
+                    }else{
+                        res.send("wrong"); 
+                    }
+                }
+            });
+        }else{
+            res.send("error"); 
+        } 
+    }); 
 }); 
 
 socketIo.on("connection",(socket)=>{

@@ -7,6 +7,7 @@ block body
         div(class="col-4 mx-auto")
             form(id="loginForm",class="form-signin")
                 h1(class="h3 mb-3 font-weight-normal") Please sign in 
+                div(id="errorMessages",class="alert alert-danger hide")
                 label(for="inputEmail",class="sr-only") Email address
                 input(type="email", id="inputEmail", class="form-control", placeholder="Email address" required)
                 label(for="inputPassword",class="sr-only") Password
@@ -20,7 +21,21 @@ block body
             $("#loginForm").submit((evt)=>{
                 evt.preventDefault(); 
                 $.ajax({type:"POST",url:"/login-attempt", data: {email: $("#inputEmail").val(), password: $("#inputPassword").val()}, success: (res)=>{
-                    console.log(res); 
+                    if(res === "wrong"){
+                        $("#errorMessages").text("Either your email or password are incorrect.")
+                        $("#errorMessages").removeClass("hide"); 
+                        setTimeout(()=>{
+                            $("#errorMessages").addClass("hide"); 
+                        },10000)
+                    }else if(res === "error"){
+                        $("#errorMessages").text("There was an error try again in a little.")
+                        $("#errorMessages").removeClass("hide"); 
+                        setTimeout(()=>{
+                            $("#errorMessages").addClass("hide"); 
+                        },10000)
+                    }else if(res === "success"){
+                        window.location = "/index"; 
+                    }
                 }}); 
             }); 
         }); 

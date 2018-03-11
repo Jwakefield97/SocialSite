@@ -27,7 +27,6 @@ block body
                     if(res === "success"){
                         window.location = "/"; 
                     }else if(res === "registered"){
-                        console.log("already registered"); 
                         $("#errorMessages").text("This email is taken. Please select another.")
                         $("#errorMessages").removeClass("hide"); 
                         setTimeout(()=>{
