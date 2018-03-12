@@ -2,7 +2,7 @@ const express = require("express"),
       route = express.Router(); 
       
 let authentication = function(req,res,next){
-    if(req.session.email){
+    if(req.session.username){
         next(); 
     }else{
         res.redirect('/');

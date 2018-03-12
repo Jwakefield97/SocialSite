@@ -8,8 +8,8 @@ block body
             form(id="loginForm",class="form-signin")
                 h1(class="h3 mb-3 font-weight-normal") Please sign in 
                 div(id="errorMessages",class="alert alert-danger hide")
-                label(for="inputEmail",class="sr-only") Email address
-                input(type="email", id="inputEmail", class="form-control", placeholder="Email address" required)
+                label(for="inputUsername",class="sr-only") Username
+                input(type="text", id="inputUsername", class="form-control", placeholder="Username" required)
                 label(for="inputPassword",class="sr-only") Password
                 input(type="password", id="inputPassword", class="form-control", placeholder="Password" required)
                 button(class="btn btn-lg btn-primary btn-block" type="submit") Sign in 
@@ -20,7 +20,7 @@ block body
         $(document).ready(()=>{
             $("#loginForm").submit((evt)=>{
                 evt.preventDefault(); 
-                $.ajax({type:"POST",url:"/login-attempt", data: {email: $("#inputEmail").val(), password: $("#inputPassword").val()}, success: (res)=>{
+                $.ajax({type:"POST",url:"/login-attempt", data: {username: $("#inputUsername").val(), password: $("#inputPassword").val()}, success: (res)=>{
                     if(res === "wrong"){
                         $("#errorMessages").text("Either your email or password are incorrect.")
                         $("#errorMessages").removeClass("hide"); 

@@ -8,8 +8,8 @@ block body
             form(id="loginForm",class="form-signin")
                 h1(class="h3 mb-3 font-weight-normal") Create an account
                 div(id="errorMessages",class="alert alert-danger hide") 
-                label(for="inputEmail",class="sr-only") Email address
-                input(type="email", id="inputEmail", class="form-control", placeholder="Email address" required)
+                label(for="inputUsername",class="sr-only") Username
+                input(type="text", id="inputUsername", class="form-control", placeholder="Username" required)
                 label(for="inputPassword",class="sr-only") Password
                 input(type="password", id="inputPassword", class="form-control", placeholder="Password" required)       
                 label(for="firstName",class="sr-only") FirstName
@@ -23,7 +23,7 @@ block body
         $(document).ready(()=>{
             $("#loginForm").submit((evt)=>{
                 evt.preventDefault(); 
-                $.ajax({type:"POST",url:"/sign-up-attempt", data: {email: $("#inputEmail").val(), password: $("#inputPassword").val(), firstName: $("#firstName").val(), lastName: $("#lastName").val()}, success: (res)=>{
+                $.ajax({type:"POST",url:"/sign-up-attempt", data: {username: $("#inputUsername").val(), password: $("#inputPassword").val(), firstName: $("#firstName").val(), lastName: $("#lastName").val()}, success: (res)=>{
                     if(res === "success"){
                         window.location = "/"; 
                     }else if(res === "registered"){

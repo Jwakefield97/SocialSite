@@ -30,8 +30,8 @@ app.use(bodyParser.json());
 app.use("/home", feedRoutes); 
 
 app.get("/",(req,res)=>{
-    if(req.session.email){
-        res.redirect("/index"); 
+    if(req.session.username){
+        res.redirect("/home/feed"); 
     }else{
         res.render("login.pug"); 
     }
@@ -52,7 +52,7 @@ app.post("/sign-up-attempt", (req,res)=>{
     bcrypt.hash(attempt.password, saltRounds, (err, hash)=> {
        if(!err){
             attempt.password = hash; 
-            dbconn.query(querybuilder.findUser(attempt.email), (err,result)=>{
+            dbconn.query(querybuilder.findUser(attempt.username), (err,result)=>{
                 if(err){
                     res.send("error");  
                     console.log(err); 
@@ -79,14 +79,14 @@ app.post("/sign-up-attempt", (req,res)=>{
 
 app.post("/login-attempt",(req,res)=>{
     let attempt = req.body;  
-    dbconn.query(querybuilder.findUser(attempt.email), (err,result)=>{
+    dbconn.query(querybuilder.findUser(attempt.username), (err,result)=>{
         if(result.length === 1){
             bcrypt.compare(attempt.password.toString().trim(), result[0].Password, function(err, check) { 
                 if(err){
                     res.send("error"); 
                 }else{
                     if(check === true){
-                        req.session.email = result[0].Email; //set session id 
+                        req.session.username = result[0].Username; //set session id 
                         res.send("success"); 
 
                     }else{

@@ -1,11 +1,13 @@
 /*CREATE DATABASE hackathon; */
 
-CREATE TABLE user (
+/*CREATE TABLE user (
 	Id INT NOT NULL AUTO_INCREMENT,
-    FirstName VARCHAR(255) NOT NULL,
-    LastName VARCHAR(255) NOT NULL,
-    Email VARCHAR(300) NOT NULL,
-    Password VARCHAR(100) NOT NULL, 
+    FirstName VARCHAR(200) NOT NULL,
+    LastName VARCHAR(200) NOT NULL,
+    Email VARCHAR(300),
+    Username VARCHAR(200) NOT NULL, 
+    Password VARCHAR(200) NOT NULL, 
     DateJoined DATETIME DEFAULT CURRENT_TIMESTAMP, 
     PRIMARY KEY (Id) 
-); 
+); */
+
