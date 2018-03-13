@@ -23,7 +23,7 @@ app.set("view engine","pug");//sets view engine
 app.set("views", "./views");  //tells view engine where to look for templates 
 
 
-app.use(expressSession({ secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 }}));
+app.use(expressSession({ secret: 'this-is-a-secret-token', cookie: { maxAge: 600000 }}));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json()); 
 

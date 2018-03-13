@@ -3,6 +3,7 @@ const express = require("express"),
       
 let authentication = function(req,res,next){
     if(req.session.username){
+        req.session.touch(); 
         next(); 
     }else{
         res.redirect('/');
