@@ -48,7 +48,6 @@ app.post("/sign-up-attempt", (req,res)=>{
 
 app.post("/login-attempt",(req,res)=>{
     dao.signInAttempt(req.body).then(result =>{
-        console.log(result);
         if(result[0] === "success"){
             req.session.username = result[1]; //set session id
             res.send(result[0]); //return success string to browser
