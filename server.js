@@ -4,15 +4,7 @@ const express = require("express"),
     bodyParser = require("body-parser"), 
     http = require("http").Server(app),
     socketIo = require("socket.io")(http),
-    mysql = require("mysql"),
-    dbconn = mysql.createConnection({ //used to connect to db 
-      host: "localhost",
-      user: "hackathon",
-      password: "hackathon",
-      database: "hackathon"
-    }),
-    bcrypt = require("bcrypt"), // used for encryption 
-    saltRounds = 10,//num of salting rounds
+    dao = require("./modules/dao.js"), 
     querybuilder = require("./modules/querybuilder.js"),
     homeRoutes = require("./routes/homeRoutes.js"),
 	expressSession = require("express-session"); //used for logins and sessions;   
@@ -47,57 +39,25 @@ app.get("/sign-up",(req,res)=>{
 }); 
 
 app.post("/sign-up-attempt", (req,res)=>{
-    let attempt = req.body; 
-    attempt.password = attempt.password.trim(); 
-    bcrypt.hash(attempt.password, saltRounds, (err, hash)=> {
-       if(!err){
-            attempt.password = hash; 
-            dbconn.query(querybuilder.findUser(attempt.username), (err,result)=>{
-                if(err){
-                    res.send("error");  
-                    console.log(err); 
-                }else{
-                    if(result.length === 0){
-                        dbconn.query(querybuilder.createUser(attempt), (err,result)=>{
-                            if(err){
-                                res.send("error");
-                                console.log(err); 
-                            }
-                        }); 
-                        res.send("success");
-                    }else{
-                        res.send("registered"); 
-                    }
-                }
-            });   
-       }else{
-            res.send("error");
-            console.log(err); 
-       }
-   });
+    dao.signUpAttempt(req.body).then(result =>{
+        res.send(result); 
+    }).catch(err=>{
+        console.log(err); 
+    }); 
 });
 
 app.post("/login-attempt",(req,res)=>{
-    let attempt = req.body;  
-    dbconn.query(querybuilder.findUser(attempt.username), (err,result)=>{
-        if(result.length === 1){
-            bcrypt.compare(attempt.password.toString().trim(), result[0].Password, function(err, check) { 
-                if(err){
-                    res.send("error"); 
-                }else{
-                    if(check === true){
-                        req.session.username = result[0].Username; //set session id 
-                        res.send("success"); 
-
-                    }else{
-                        res.send("wrong"); 
-                    }
-                }
-            });
+    dao.signInAttempt(req.body).then(result =>{
+        console.log(result);
+        if(result[0] === "success"){
+            req.session.username = result[1]; //set session id
+            res.send(result[0]); //return success string to browser
         }else{
-            res.send("error"); 
-        } 
-    }); 
+            res.send(result); 
+        }
+    }).catch(err=>{
+        console.log(err); 
+    });
 }); 
 
 socketIo.on("connection",(socket)=>{
