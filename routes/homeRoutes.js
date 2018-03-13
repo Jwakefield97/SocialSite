@@ -11,8 +11,9 @@ let authentication = function(req,res,next){
 }
 route.use(authentication); 
 
-route.get("/feed",(req,res)=>{
-    res.render("feed.pug"); 
+//default route for home -- /home 
+route.get("/",(req,res)=>{
+    res.render("home.pug"); 
 }); 
 
 

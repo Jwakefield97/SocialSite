@@ -14,7 +14,7 @@ const express = require("express"),
     bcrypt = require("bcrypt"), // used for encryption 
     saltRounds = 10,//num of salting rounds
     querybuilder = require("./modules/querybuilder.js"),
-    feedRoutes = require("./routes/feedRoutes.js"),
+    homeRoutes = require("./routes/homeRoutes.js"),
 	expressSession = require("express-session"); //used for logins and sessions;   
 
 app.use(express.static("resources"));
@@ -27,11 +27,11 @@ app.use(expressSession({ secret: 'this-is-a-secret-token', cookie: { maxAge: 600
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json()); 
 
-app.use("/home", feedRoutes); 
+app.use("/home", homeRoutes); 
 
 app.get("/",(req,res)=>{
     if(req.session.username){
-        res.redirect("/home/feed"); 
+        res.redirect("/home"); 
     }else{
         res.render("login.pug"); 
     }
