@@ -3,12 +3,7 @@ extends master-template.pug
 block head 
     title Home page
     style.
-        body{
-            background-color: #f2f2f2; 
-        }
-        .page-content{
-            background-color: white; 
-        }
+      
 block body
     div(class="container-fluid")
         div(class="row sticky-top")
@@ -44,7 +39,38 @@ block body
                             div(class="col-12 mx-auto")
                                 div panel 3
                     div(class="tab-pane fade",id="pills-profile",role="tabpanel",aria-labelledby="pills-profile-tab")
-                        div(class="row")
-                            div(class="col-12 mx-auto")
-                                div panel 4
-                
+                        div(class="row mt-3")
+                            div(class="col-12")
+                                img(height="300",width="400",src="",class="rounded mx-auto d-block" alt="No profile image selected" id="profileImage")
+                        div(class="row mt-3")
+                            div(class="col-6 mx-auto")
+                                div(class="input-group")
+                                    div(class="input-group-prepend")
+                                        span(class="input-group-text") Profile Image
+                                    div(class="custom-file")
+                                        input(type="file",class="custom-file-input",id="profileImageInput")
+                                        label(class="custom-file-label",for="profileImageInput") Choose file
+                        div(class="row mt-3")
+                            div(class="col-6 mx-auto")
+                                div(class="input-group")
+                                    div(class="input-group-prepend")
+                                        span(class="input-group-text") Biography
+                                    textarea(class="form-control",id="bio",aria-label="Biography") 
+
+                        div(class="row mt-3")
+                            div(class="col-6 mx-auto")
+                                div(class="input-group")
+                                    div(class="input-group-prepend")
+                                        span(class="input-group-text") Email
+                                    input(class="form-control",id="email",aria-label="Email",placeholder="name@example.com") 
+                                div(class="input-group mt-3")
+                                    div(class="input-group-prepend")
+                                        span(class="input-group-text") Phone Number
+                                    input(class="form-control",id="phoneNumber",aria-label="Phone Number") 
+                        
+                        div(class="row mt-3")
+                            div(class="col-9")
+                               button(class="btn btn-success float-right",id="saveChanges",type="button") Save Changes
+
+
+
