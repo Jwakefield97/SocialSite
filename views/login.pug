@@ -22,17 +22,17 @@ block body
                 evt.preventDefault(); 
                 $.ajax({type:"POST",url:"/login-attempt", data: {username: $("#inputUsername").val(), password: $("#inputPassword").val()}, success: (res)=>{
                     if(res === "wrong"){
-                        $("#errorMessages").text("Either your email or password are incorrect.")
+                        $("#errorMessages").text("Either your email or password are incorrect."); 
                         $("#errorMessages").removeClass("hide"); 
                         setTimeout(()=>{
                             $("#errorMessages").addClass("hide"); 
-                        },10000)
+                        },10000); 
                     }else if(res === "error"){
-                        $("#errorMessages").text("There was an error try again in a little.")
+                        $("#errorMessages").text("There was an error try again in a little."); 
                         $("#errorMessages").removeClass("hide"); 
                         setTimeout(()=>{
                             $("#errorMessages").addClass("hide"); 
-                        },10000)
+                        },10000); 
                     }else if(res === "success"){
                         window.location = "/home"; 
                     }

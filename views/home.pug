@@ -23,6 +23,10 @@ block body
         div(class="row")    
             div(class="col-10 mx-auto mt-3")
                 div(class="tab-content page-content",id="pills-tabContent")
+                    div(class="row")
+                        div(class="col-6 mx-auto")
+                            div(id="errorMessages",class="alert alert-danger hide")
+                            div(id="successMessages",class="alert alert-success hide")
                     div(class="tab-pane fade show active",id="pills-feed",role="tabpanel",aria-labelledby="pills-feed-tab")
                         div(class="row")
                             div(class="col-12 mx-auto")
@@ -55,22 +59,23 @@ block body
                                 div(class="input-group")
                                     div(class="input-group-prepend")
                                         span(class="input-group-text") Biography
-                                    textarea(class="form-control",id="bio",aria-label="Biography") 
+                                    textarea(class="form-control",id="bio",aria-label="Biography",maxlength="2000") 
 
                         div(class="row mt-3")
                             div(class="col-6 mx-auto")
                                 div(class="input-group")
                                     div(class="input-group-prepend")
                                         span(class="input-group-text") Email
-                                    input(class="form-control",id="email",aria-label="Email",placeholder="name@example.com") 
+                                    input(type="email",class="form-control",id="email",aria-label="Email",placeholder="name@example.com",maxlength="300") 
                                 div(class="input-group mt-3")
                                     div(class="input-group-prepend")
                                         span(class="input-group-text") Phone Number
-                                    input(class="form-control",id="phoneNumber",aria-label="Phone Number") 
+                                    input(type="tel",class="form-control",id="phoneNumber",aria-label="Phone Number",maxlength="12") 
                         
                         div(class="row mt-3")
                             div(class="col-9")
                                button(class="btn btn-success float-right",id="saveChanges",type="button") Save Changes
+    script(src="/js/home.js")
 
 
 

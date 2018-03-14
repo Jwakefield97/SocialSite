@@ -79,6 +79,47 @@ obj.signInAttempt = function(attempt){
     }); 
 }; 
 
+obj.updateProfile = function(username,updateObj){
+    return new Promise ((res,rej) => {
+        const dbconn = mysql.createConnection(dbprops); 
+        dbconn.query(querybuilder.findAdditionalInfo(username), (err,result)=>{
+            let query; 
+            if(!err){
+                if(result.length !== 0){
+                    query = querybuilder.updateAdditonalInfo(username,updateObj); 
+                }else{
+                    query = querybuilder.insertAddionalInfo(username,updateObj); 
+                }
+                dbconn.query(query,(err,result)=>{
+                    if(!err){
+                        dbconn.destroy();
+                        res("success"); 
+                    }else{
+                        console.log(err); 
+                        dbconn.destroy();
+                        res("error");
+                    }
+                }); 
+            }else{
+                console.log(err); 
+                dbconn.destroy();
+                res("error"); 
+            }
+        }); 
+    }); 
+}; 
 
+obj.getAdditionalInfo = function(username){
+    return new Promise ((res,rej)=>{
+        const dbconn = mysql.createConnection(dbprops); 
+        dbconn.query(querybuilder.findAdditionalInfo(username), (err,result)=>{
+            if(!err){
+                res(result); 
+            }else{
+                rej("error"); 
+            }
+        }); 
+    }); 
+}; 
 
 module.exports = obj; 

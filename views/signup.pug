@@ -27,17 +27,17 @@ block body
                     if(res === "success"){
                         window.location = "/"; 
                     }else if(res === "registered"){
-                        $("#errorMessages").text("This email is taken. Please select another.")
+                        $("#errorMessages").text("This email is taken. Please select another.");
                         $("#errorMessages").removeClass("hide"); 
                         setTimeout(()=>{
                             $("#errorMessages").addClass("hide"); 
-                        },10000)
+                        },10000);
                     }else{
-                        $("#errorMessages").text("There was an error. Please try again.")
+                        $("#errorMessages").text("There was an error. Please try again.");
                         $("#errorMessages").removeClass("hide"); 
                         setTimeout(()=>{
                             $("#errorMessages").addClass("hide"); 
-                        },10000) 
+                        },10000);
                     }
                 }}); 
             }); 
