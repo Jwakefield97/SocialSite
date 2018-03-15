@@ -1,6 +1,7 @@
 const express = require("express"),
       route = express.Router(),
-      dao = require("../modules/dao.js"); 
+      dao = require("../modules/dao.js"),
+      fileUpload = require('express-fileupload'); 
       
 let authentication = function(req,res,next){
     if(req.session.username){
@@ -11,6 +12,7 @@ let authentication = function(req,res,next){
     }
 }
 route.use(authentication); 
+//route.use(fileUpload()); 
 
 //default route for home -- /home 
 route.get("/",(req,res)=>{

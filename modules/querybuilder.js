@@ -13,11 +13,11 @@ obj.findAdditionalInfo = function(username){
 };
 
 obj.insertAddionalInfo = function(username,info){
-    return (`INSERT INTO user_additional (username,profileImage,bio,email,phone_number,last_accessed) VALUES ('${username.toString().trim()}','${null}','${info.bio.toString().trim()}','${info.email.toString().trim()}',${info.phoneNumber.toString().trim()},NOW())`).toString(); 
+    return (`INSERT INTO user_additional (username,profileImage,bio,email,phone_number,last_accessed) VALUES ('${username.toString().trim()}','${info.profileImage.toString().trim()}','${info.bio.toString().trim()}','${info.email.toString().trim()}',${info.phoneNumber.toString().trim()},NOW())`).toString(); 
 };
 
 obj.updateAdditonalInfo = function(username,info){
-    return (`UPDATE user_additional SET profileImage=${null},bio='${info.bio.toString().trim()}',email='${info.email.toString().trim()}',phone_number=${info.phoneNumber.toString().trim()},last_accessed=NOW() WHERE username='${username.toString().trim()}'`).toString();
+    return (`UPDATE user_additional SET profileImage='${info.profileImage.toString().trim()}',bio='${info.bio.toString().trim()}',email='${info.email.toString().trim()}',phone_number=${info.phoneNumber.toString().trim()},last_accessed=NOW() WHERE username='${username.toString().trim()}'`).toString();
 };
 
 module.exports = obj; 

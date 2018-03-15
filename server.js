@@ -15,7 +15,12 @@ app.set("view engine","pug");//sets view engine
 app.set("views", "./views");  //tells view engine where to look for templates 
 
 
-app.use(expressSession({ secret: 'this-is-a-secret-token', cookie: { maxAge: 6000000 }}));
+app.use(expressSession({ 
+    secret: 'this-is-a-secret-token', 
+    cookie: { maxAge: 6000000 },
+    resave: true,
+    saveUninitialized: false
+}));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json()); 
 

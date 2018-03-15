@@ -12,14 +12,13 @@
 
 /*CREATE TABLE user_additional (
 	username VARCHAR(200) NOT NULL,
-    profileImage VARCHAR(500),
+    profileImage VARCHAR(1000),
     bio VARCHAR(2000), 
 	email VARCHAR(300),
     phone_number INT, 
     last_accessed DATETIME, 
     PRIMARY KEY (username) 
-); */ 
-
+); */  
 /*CREATE TABLE friend (
 	username VARCHAR(200) NOT NULL,
     friend_username VARCHAR(200) NOT NULL,
