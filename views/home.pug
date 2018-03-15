@@ -40,7 +40,7 @@ block body
                                         button(class="btn btn-outline-secondary",id="searchSiteButton",type="button") Search
                         div(class="row")
                             div(class="col-12 mx-auto")
-                                table(class="table table-striped")
+                                table(id="usersFullTable",class="table table-striped")
                                     thead   
                                         tr
                                             th(scope="row") Profile Pic
@@ -85,6 +85,34 @@ block body
                         div(class="row mt-3")
                             div(class="col-9")
                                button(class="btn btn-success float-right",id="saveChanges",type="button") Save Changes
+        div(id="inspectUser",class="modal fade bd-example-modal-lg",tabindex="-1",role="dialog",aria-labelledby="myLargeModalLabel",aria-hidden="true")
+            div(class="modal-dialog modal-lg")
+                div(class="modal-content")
+                    div(class="row")
+                        div(class="col-6")
+                            img(id="inspectProfileImage",height="200",src="/profile_images/defaultProfileImage.png",width="300",class="img-rounded d-block",alt="No profile image")
+                        div(class="col-6")
+                            h2 Username: 
+                                b
+                                    span(id="inspectUsername",class="label label-default") 
+                            div FirstName: 
+                                b
+                                    span(id="inspectFirstName",class="label label-default") 
+                            div LastName: 
+                                b
+                                    span(id="inspectLastName",class="label label-default") 
+                            div Bio: 
+                                b
+                                    div(id="inspectBio",class="label label-default") 
+                            div Email: 
+                                b
+                                    span(id="inspectEmail",class="label label-default") 
+                            div Phonenumber: 
+                                b
+                                    span(id="inspectPhoneNumber",class="label label-default") 
+
+
+                    
     script(src="/js/home.js")
 
 

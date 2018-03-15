@@ -46,7 +46,6 @@ route.get("/getAdditionalInfo",(req,res)=>{
 }); 
 
 route.post("/updateProfile",(req,res)=>{
-    console.log(req.body);
     dao.updateProfile(req.session.username,req.body).then(result=>{
         res.send(result);  
     }).catch(err=>{

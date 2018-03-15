@@ -9,7 +9,7 @@ obj.findUser = function(username){
 };
 
 obj.findUsers = function(startIndex,endIndex){
-    return (`SELECT u.username, u.FirstName, u.LastName, a.profileImage FROM user u LEFT JOIN user_additional a ON u.username=a.username ORDER BY u.username ASC LIMIT ${startIndex},${endIndex}`).toString();
+    return (`SELECT u.username, u.FirstName, u.LastName, a.profileImage, a.bio, a.email, a.phone_number FROM user u LEFT JOIN user_additional a ON u.username=a.username ORDER BY u.username ASC LIMIT ${startIndex},${endIndex}`).toString();
 }; 
 
 obj.findAdditionalInfo = function(username){
@@ -25,7 +25,7 @@ obj.updateAdditonalInfo = function(username,info){
 };
 
 obj.searchUsers = function(searchTerm){
-    return (`SELECT u.username, u.FirstName, u.LastName, a.profileImage FROM user u LEFT JOIN user_additional a ON u.username=a.username WHERE u.username LIKE '%${searchTerm.toString().trim()}%' OR u.FirstName LIKE '%${searchTerm.toString().trim()}%' OR u.LastName LIKE '%${searchTerm.toString().trim() || null}%' ORDER BY u.username ASC`).toString(); 
+    return (`SELECT u.username, u.FirstName, u.LastName, a.profileImage, a.bio, a.email, a.phone_number FROM user u LEFT JOIN user_additional a ON u.username=a.username WHERE u.username LIKE '%${searchTerm.toString().trim()}%' OR u.FirstName LIKE '%${searchTerm.toString().trim()}%' OR u.LastName LIKE '%${searchTerm.toString().trim() || null}%' ORDER BY u.username ASC`).toString(); 
 }
 
 module.exports = obj; 
