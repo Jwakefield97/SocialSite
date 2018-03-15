@@ -11,12 +11,30 @@ let authentication = function(req,res,next){
         res.redirect('/');
     }
 }
-route.use(authentication); 
+route.use(authentication);  
 //route.use(fileUpload()); 
 
 //default route for home -- /home 
 route.get("/",(req,res)=>{
     res.render("home.pug"); 
+}); 
+
+route.get("/searchUsers",(req,res)=>{
+    let params = req.query;
+    dao.searchUsers(params.searchTerm).then(result=>{
+        res.send(result); 
+    }).catch(err=>{
+        console.log(err); 
+    }); 
+}); 
+
+route.get("/getUserProfiles",(req,res)=>{
+    let params = req.query;  
+    dao.findUsers(params.userIndex,params.numUsers).then(result=>{
+        res.send(result); 
+    }).catch(err=>{
+        console.log(err); 
+    }); 
 }); 
 
 route.get("/getAdditionalInfo",(req,res)=>{
@@ -28,6 +46,7 @@ route.get("/getAdditionalInfo",(req,res)=>{
 }); 
 
 route.post("/updateProfile",(req,res)=>{
+    console.log(req.body);
     dao.updateProfile(req.session.username,req.body).then(result=>{
         res.send(result);  
     }).catch(err=>{

@@ -27,7 +27,7 @@ block body
                     if(res === "success"){
                         window.location = "/"; 
                     }else if(res === "registered"){
-                        $("#errorMessages").text("This email is taken. Please select another.");
+                        $("#errorMessages").text("This username is taken. Please select another.");
                         $("#errorMessages").removeClass("hide"); 
                         setTimeout(()=>{
                             $("#errorMessages").addClass("hide"); 

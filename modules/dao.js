@@ -10,9 +10,35 @@ let obj = {},
     bcrypt = require("bcrypt"), // used for encryption 
     saltRounds = 10;//num of salting rounds 
 
-obj.findUser = function(user){
-
+obj.findUsers = function(startIndex,endIndex){
+    return new Promise((res,rej)=>{
+        const dbconn = mysql.createConnection(dbprops); 
+        dbconn.query(querybuilder.findUsers(startIndex,endIndex), (err,result)=>{
+            if(err){
+                dbconn.destroy();
+                res("error")
+            }else{
+                dbconn.destroy();
+                res(result); 
+            }
+        });
+    }); 
 };
+
+obj.searchUsers = function(searchTerm){
+    return new Promise((res,rej)=>{
+        const dbconn = mysql.createConnection(dbprops); 
+        dbconn.query(querybuilder.searchUsers(searchTerm), (err,result)=>{
+            if(err){
+                dbconn.destroy();
+                res("error")
+            }else{
+                dbconn.destroy();
+                res(result); 
+            }
+        });
+    }); 
+}
 
 obj.signUpAttempt = function(attempt){
     return new Promise((res,rej) => {

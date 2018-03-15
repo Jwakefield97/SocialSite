@@ -8,16 +8,24 @@ obj.findUser = function(username){
     return (`SELECT * FROM user WHERE Username='${username.toString().trim()}'`).toString();
 };
 
+obj.findUsers = function(startIndex,endIndex){
+    return (`SELECT u.username, u.FirstName, u.LastName, a.profileImage FROM user u LEFT JOIN user_additional a ON u.username=a.username ORDER BY u.username ASC LIMIT ${startIndex},${endIndex}`).toString();
+}; 
+
 obj.findAdditionalInfo = function(username){
     return (`SELECT * FROM user_additional WHERE username='${username}'`).toString(); 
 };
 
 obj.insertAddionalInfo = function(username,info){
-    return (`INSERT INTO user_additional (username,profileImage,bio,email,phone_number,last_accessed) VALUES ('${username.toString().trim()}','${info.profileImage.toString().trim()}','${info.bio.toString().trim()}','${info.email.toString().trim()}',${info.phoneNumber.toString().trim()},NOW())`).toString(); 
+    return (`INSERT INTO user_additional (username,profileImage,bio,email,phone_number,last_accessed) VALUES ('${username.toString().trim() || null}','${info.profileImage.toString().trim() || null}','${info.bio.toString().trim() || null}','${info.email.toString().trim() || null}',${info.phoneNumber.toString().trim() || null},NOW())`).toString(); 
 };
 
 obj.updateAdditonalInfo = function(username,info){
-    return (`UPDATE user_additional SET profileImage='${info.profileImage.toString().trim()}',bio='${info.bio.toString().trim()}',email='${info.email.toString().trim()}',phone_number=${info.phoneNumber.toString().trim()},last_accessed=NOW() WHERE username='${username.toString().trim()}'`).toString();
+    return (`UPDATE user_additional SET profileImage='${info.profileImage.toString().trim() || null}',bio='${info.bio.toString().trim() || null}',email='${info.email.toString().trim() || null}',phone_number=${info.phoneNumber.toString().trim() || null},last_accessed=NOW() WHERE username='${username.toString().trim()}'`).toString();
 };
+
+obj.searchUsers = function(searchTerm){
+    return (`SELECT u.username, u.FirstName, u.LastName, a.profileImage FROM user u LEFT JOIN user_additional a ON u.username=a.username WHERE u.username LIKE '%${searchTerm.toString().trim()}%' OR u.FirstName LIKE '%${searchTerm.toString().trim()}%' OR u.LastName LIKE '%${searchTerm.toString().trim() || null}%' ORDER BY u.username ASC`).toString(); 
+}
 
 module.exports = obj; 
