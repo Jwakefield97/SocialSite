@@ -144,13 +144,7 @@ let setUserModal = function(username){
     }); 
 }; 
 
-$(document).ready(()=>{
-    $("#imageLink").change(evt=>{
-        $("#profileImage").attr("src",$("#imageLink").val().trim()); 
-    }); 
-
-    loadUsers(); //load inital 25 users for searching
-
+let getAdditonalInfo = function(){
     $.ajax({url: "/home/getAdditionalInfo", success: (result)=>{
         if(result !== "error"){
             $("#bio").val(result.bio === "null" ? "": result.bio);
@@ -166,8 +160,24 @@ $(document).ready(()=>{
             },10000);
         }
     }});
+}; 
 
-    $("#loadMoreUsers").click(evt=>{
+$(document).ready(()=>{
+    $("#imageLink").change(evt=>{
+        $("#profileImage").attr("src",$("#imageLink").val().trim()); 
+    }); 
+
+    $("#pills-profile-tab").click(evt=>{
+        getAdditonalInfo();
+    });
+
+    $("#pills-search-tab").click(evt=>{//load users when tab is clicked
+        userCount = 0;
+        userAmount = 15;
+        loadUsers();
+    });
+
+    $("#loadMoreUsers").click(evt=>{ 
         loadUsers();
     }); 
 
