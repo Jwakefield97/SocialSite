@@ -78,4 +78,30 @@ route.get("/getPendingFriends",(req,res)=>{
     }); 
 }); 
 
+route.get("/addFriend",(req,res)=>{  //add friend then delete the friend request from friend_pending 
+    let params = req.query; 
+    dao.addFriend(req.session.username, params.friend_username).then(result=>{
+        if(result === "success"){
+            dao.deleteFriendRequest(req.session.username, params.friend_username).then(result=>{
+                res.send(result); 
+            }).catch(err=>{
+                console.log(err); 
+            });
+        }else{
+            res.send("error"); 
+        } 
+    }).catch(err=>{
+        console.log(err); 
+    }); 
+});
+
+route.get("/deleteFriendRequest",(req,res)=>{
+    let params = req.query; 
+    dao.deleteFriendRequest(req.session.username, params.friend_username).then(result=>{
+        res.send(result); 
+    }).catch(err=>{
+        console.log(err); 
+    }); 
+});
+
 module.exports = route; 
