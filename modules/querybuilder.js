@@ -32,9 +32,9 @@ obj.findFriendRequests = function(from,to){
     return (`(SELECT username FROM friend WHERE username = '${from.toString().trim()}' AND friend_username = '${to.toString().trim()}') UNION ALL (SELECT username FROM friends_pending WHERE username = '${from.toString().trim()}' AND friend_username = '${to.toString().trim()}')`).toString(); 
 };
 
-obj.insertFriendRequest = function(from,to){
-    return (`INSERT INTO friends_pending (username,friend_username,request_status,time_requested) VALUES ('${from.toString().trim()}','${to.toString().trim()}','pending',NOW())`).toString();
-}; 
+obj.addFriend = function(username,friend){
+    return (`INSERT INTO friend (username,friend_username,time_friended) VALUES (${username.toString().trim()},${friend.toString().trim()},NOW())`).toString(); 
+}
 
 obj.getFriends = function(username){
     return (`SELECT u.username, u.FirstName, u.LastName, u.profileImage FROM (SELECT u.Username,u.FirstName,u.LastName,ua.profileImage FROM user u LEFT JOIN user_additional ua ON u.username = ua.username) as u, friend f WHERE f.username = '${username.toString().trim()}' AND u.Username = f.friend_username`).toString(); 
@@ -43,7 +43,13 @@ obj.getPendingFriends = function(username){
     return (`SELECT u.Username, u.FirstName, u.LastName, u.profileImage, fp.request_status FROM (SELECT u.Username,u.FirstName,u.LastName,ua.profileImage FROM user u LEFT JOIN user_additional ua ON u.username = ua.username) as u, friends_pending fp WHERE u.Username = fp.username AND fp.friend_username = '${username.toString().trim()}'`).toString(); 
 }; 
 
+obj.insertFriendRequest = function(from,to){
+    return (`INSERT INTO friends_pending (username,friend_username,request_status,time_requested) VALUES ('${from.toString().trim()}','${to.toString().trim()}','pending',NOW())`).toString();
+}; 
 
+obj.deleteFriendRequest = function(username, friend){
+    return (`DELETE FROM friends_pending WHERE username = '${friend.toString().trim()}' AND friend_username = '${username.toString().trim()}'`).toString();
+};
 
 module.exports = obj; 
 

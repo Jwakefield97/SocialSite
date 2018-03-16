@@ -208,4 +208,34 @@ obj.getPendingFriends = function(username){
     }); 
 };
 
+obj.addFriend = function(username, friend_username){
+    return new Promise ((req,res)=>{
+        const dbconn = mysql.createConnection(dbprops);
+        dbconn.query(querybuilder.addFriend(username,friend_username), (err,result)=>{
+            if(err){
+                dbconn.destroy();
+                res("error");
+            }else{
+                dbconn.destroy();
+                res("success"); 
+            }
+        });
+    }); 
+}; 
+
+obj.deleteFriendRequest = function(username,friend_username){
+    return new Promise ((req,res)=>{
+        const dbconn = mysql.createConnection(dbprops);
+        dbconn.query(querybuilder.deleteFriendRequest(username,friend_username), (err,result)=>{
+            if(err){
+                dbconn.destroy();
+                res("error");
+            }else{
+                dbconn.destroy();
+                res("success"); 
+            }
+        });
+    }); 
+}; 
+
 module.exports = obj; 
