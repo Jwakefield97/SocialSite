@@ -70,4 +70,12 @@ route.get("/getFriends",(req,res)=>{
     }); 
 }); 
 
+route.get("/getPendingFriends",(req,res)=>{
+    dao.getPendingFriends(req.session.username).then(result=>{
+        res.send(result); 
+    }).catch(err=>{
+        console.log(err); 
+    }); 
+}); 
+
 module.exports = route; 

@@ -37,7 +37,13 @@ obj.insertFriendRequest = function(from,to){
 }; 
 
 obj.getFriends = function(username){
-    return (``).toString(); 
-}
+    return (`SELECT u.username, u.FirstName, u.LastName, u.profileImage FROM (SELECT u.Username,u.FirstName,u.LastName,ua.profileImage FROM user u LEFT JOIN user_additional ua ON u.username = ua.username) as u, friend f WHERE f.username = '${username.toString().trim()}' AND u.Username = f.friend_username`).toString(); 
+};
+obj.getPendingFriends = function(username){
+    return (`SELECT u.Username, u.FirstName, u.LastName, u.profileImage, fp.request_status FROM (SELECT u.Username,u.FirstName,u.LastName,ua.profileImage FROM user u LEFT JOIN user_additional ua ON u.username = ua.username) as u, friends_pending fp WHERE u.Username = fp.username AND fp.friend_username = '${username.toString().trim()}'`).toString(); 
+}; 
+
+
 
 module.exports = obj; 
+

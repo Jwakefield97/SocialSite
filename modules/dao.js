@@ -184,12 +184,28 @@ obj.getFriends = function(username){
             if(err){
                 dbconn.destroy();
                 res("error"); 
+                console.log(err);
             }else{
                 dbconn.destroy();
                 res(result); 
             }
         }); 
     }); 
-}
+};
+
+obj.getPendingFriends = function(username){
+    return new Promise ((res,rej)=>{
+        const dbconn = mysql.createConnection(dbprops);
+        dbconn.query(querybuilder.getPendingFriends(username), (err,result)=>{
+            if(err){
+                dbconn.destroy();
+                res("error"); 
+            }else{
+                dbconn.destroy();
+                res(result); 
+            }
+        }); 
+    }); 
+};
 
 module.exports = obj; 
