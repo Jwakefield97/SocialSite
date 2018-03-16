@@ -53,4 +53,21 @@ route.post("/updateProfile",(req,res)=>{
     });  
 }); 
 
+route.get("/sendFriendRequest",(req,res)=>{
+    let params = req.query; 
+    dao.sendFriendRequest(req.session.username,params.friendTo).then(result=>{
+        res.send(result); 
+    }).catch(err=>{
+        console.log(err); 
+    });
+}); 
+
+route.get("/getFriends",(req,res)=>{
+    dao.getFriends(req.session.username).then(result=>{
+        res.send(result); 
+    }).catch(err=>{
+        console.log(err); 
+    }); 
+}); 
+
 module.exports = route; 

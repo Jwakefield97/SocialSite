@@ -4,7 +4,7 @@
 	Id INT NOT NULL AUTO_INCREMENT,
     FirstName VARCHAR(200) NOT NULL,
     LastName VARCHAR(200) NOT NULL,
-    Username VARCHAR(200) NOT NULL, 
+    Username VARCHAR(200) NOT NULL, friends_pending
     Password VARCHAR(200) NOT NULL, 
     DateJoined DATETIME DEFAULT CURRENT_TIMESTAMP, 
     PRIMARY KEY (Id) 
@@ -23,13 +23,14 @@
 	username VARCHAR(200) NOT NULL,
     friend_username VARCHAR(200) NOT NULL,
 	time_friended DATETIME DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (username) 
+	PRIMARY KEY (username,friend_username) 
 ); */
+ 
 
 /*CREATE TABLE friends_pending (
 	username VARCHAR(200) NOT NULL,
     friend_username VARCHAR(200) NOT NULL,
-    reject BOOL, 
+    request_status VARCHAR(10),                can be either rejected accepted or pending
     time_requested DATETIME DEFAULT CURRENT_TIMESTAMP, 
-    PRIMARY KEY (username) 
+    PRIMARY KEY (username,friend_username)) 
 ); */ 

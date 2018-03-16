@@ -26,6 +26,18 @@ obj.updateAdditonalInfo = function(username,info){
 
 obj.searchUsers = function(searchTerm){
     return (`SELECT u.username, u.FirstName, u.LastName, a.profileImage, a.bio, a.email, a.phone_number FROM user u LEFT JOIN user_additional a ON u.username=a.username WHERE u.username LIKE '%${searchTerm.toString().trim()}%' OR u.FirstName LIKE '%${searchTerm.toString().trim()}%' OR u.LastName LIKE '%${searchTerm.toString().trim() || null}%' ORDER BY u.username ASC`).toString(); 
+};
+
+obj.findFriendRequests = function(from,to){
+    return (`(SELECT username FROM friend WHERE username = '${from.toString().trim()}' AND friend_username = '${to.toString().trim()}') UNION ALL (SELECT username FROM friends_pending WHERE username = '${from.toString().trim()}' AND friend_username = '${to.toString().trim()}')`).toString(); 
+};
+
+obj.insertFriendRequest = function(from,to){
+    return (`INSERT INTO friends_pending (username,friend_username,request_status,time_requested) VALUES ('${from.toString().trim()}','${to.toString().trim()}','pending',NOW())`).toString();
+}; 
+
+obj.getFriends = function(username){
+    return (``).toString(); 
 }
 
 module.exports = obj; 

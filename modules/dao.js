@@ -140,12 +140,56 @@ obj.getAdditionalInfo = function(username){
         const dbconn = mysql.createConnection(dbprops); 
         dbconn.query(querybuilder.findAdditionalInfo(username), (err,result)=>{
             if(!err){
+                dbconn.destroy();
                 res(result); 
             }else{
+                dbconn.destroy();
                 rej("error"); 
             }
         }); 
     }); 
 }; 
+
+obj.sendFriendRequest = function(from,to){
+    return new Promise ((res,rej)=>{
+        const dbconn = mysql.createConnection(dbprops);
+        dbconn.query(querybuilder.findFriendRequests(from,to), (err,result)=>{
+            if(err){
+                dbconn.destroy();
+                res("error"); 
+            }else{
+                if(result.length === 0){
+                    dbconn.query(querybuilder.insertFriendRequest(from,to), (err,result)=>{
+                        if(err){
+                            dbconn.destroy();
+                            res("error");
+                        }else{
+                            dbconn.destroy();
+                            res("success"); 
+                        }
+                    });
+                }else{
+                    dbconn.destroy();
+                    res("requested"); 
+                }
+            }
+        }); 
+    }); 
+}; 
+
+obj.getFriends = function(username){
+    return new Promise ((res,rej)=>{
+        const dbconn = mysql.createConnection(dbprops);
+        dbconn.query(querybuilder.getFriends(username), (err,result)=>{
+            if(err){
+                dbconn.destroy();
+                res("error"); 
+            }else{
+                dbconn.destroy();
+                res(result); 
+            }
+        }); 
+    }); 
+}
 
 module.exports = obj; 

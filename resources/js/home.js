@@ -162,6 +162,31 @@ let getAdditonalInfo = function(){
     }});
 }; 
 
+let sendFriendRequest = function(username){
+    $("#inspectUser").modal("hide");
+    $.ajax({url: "/home/sendFriendRequest", data: {friendTo: username},  success: (result)=>{
+        if(result === "error"){
+            $("#errorMessages").text("There was an error sending friend request."); 
+            $("#errorMessages").removeClass("hide"); 
+            setTimeout(()=>{
+                $("#errorMessages").addClass("hide"); 
+            },10000);
+        }else if(result === "requested"){
+            $("#errorMessages").text("This friend has already been requested."); 
+            $("#errorMessages").removeClass("hide"); 
+            setTimeout(()=>{
+                $("#errorMessages").addClass("hide"); 
+            },10000);
+        }else{
+            $("#successMessages").text("Friend request was sent successfully!"); 
+            $("#successMessages").removeClass("hide"); 
+            setTimeout(()=>{
+                $("#successMessages").addClass("hide"); 
+            },10000);
+        }
+    }});
+}; 
+
 $(document).ready(()=>{
     $("#imageLink").change(evt=>{
         $("#profileImage").attr("src",$("#imageLink").val().trim()); 
@@ -189,7 +214,11 @@ $(document).ready(()=>{
         if(evt.key === "Enter"){
             searchUserTable();
         }
-    });     
+    });   
+    
+    $("#sendFriendRequest").click(evt=>{
+        sendFriendRequest($("#inspectUsername").text()); 
+    }); 
 
     $("#saveChanges").click(evt=>{
         //check these for validity and sanitize 
