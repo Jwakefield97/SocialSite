@@ -209,7 +209,7 @@ obj.getPendingFriends = function(username){
 };
 
 obj.addFriend = function(username, friend_username){
-    return new Promise ((req,res)=>{
+    return new Promise ((res,rej)=>{
         const dbconn = mysql.createConnection(dbprops);
         dbconn.query(querybuilder.addFriend(username,friend_username), (err,result)=>{
             if(err){
@@ -224,7 +224,7 @@ obj.addFriend = function(username, friend_username){
 }; 
 
 obj.deleteFriendRequest = function(username,friend_username){
-    return new Promise ((req,res)=>{
+    return new Promise ((res,rej)=>{
         const dbconn = mysql.createConnection(dbprops);
         dbconn.query(querybuilder.deleteFriendRequest(username,friend_username), (err,result)=>{
             if(err){
@@ -239,7 +239,7 @@ obj.deleteFriendRequest = function(username,friend_username){
 }; 
 
 obj.deleteFriend = function(username,friend_username){
-    return new Promise ((req,res)=>{
+    return new Promise ((res,rej)=>{
         const dbconn = mysql.createConnection(dbprops);
         dbconn.query(querybuilder.deleteFriend(username,friend_username), (err,result)=>{
             if(err){
