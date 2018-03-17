@@ -2,25 +2,56 @@
 let userCount = 0, //how many users are currently on the page
     userAmount = 15, //amount of user to return 
     defaultUserImage = "/profile_images/defaultProfileImage.png",
-    usersList = []; 
+    usersList = [],
+    friendsList = [],
+    friendsPendingList = []; 
 
 
-let loadUsers = function(){
+let setMessage = function(type,msg){
+    if(type === "error"){
+        $("#errorMessages").text(msg); 
+        $("#errorMessages").removeClass("hide"); 
+        setTimeout(()=>{
+            $("#errorMessages").addClass("hide"); 
+        },10000);
+    }else if (type === "success"){
+        $("#successMessages").text(msg); 
+        $("#successMessages").removeClass("hide"); 
+        setTimeout(()=>{
+            $("#successMessages").addClass("hide"); 
+        },10000);
+    }else if (type === "info"){
+        $("#infoMessages").text(msg); 
+        $("#infoMessages").removeClass("hide"); 
+        setTimeout(()=>{
+            $("#infoMessages").addClass("hide"); 
+        },10000);
+    }; 
+}; 
+
+let getUsers = function(){
     $.ajax({type: "GET",url: "/home/getUserProfiles", data: {userIndex: userCount, numUsers: userAmount}, success: (result)=>{
         if(result !== "error"){
-            createUserTable(result,userCount === 0); 
+            createUserTable(result,userCount === 0,"userTable"); 
             usersList = result; 
         }else{
-            console.log("error while getting user info"); 
+            setMessage("error", "An error occured while getting user info."); 
         }
         userCount += userAmount; 
     }}); 
 }; 
 
-let createUserTable = function(users,isNewTable){
-    let oldTable = $("#userTable"),
+let createUserTable = function(users,isNewTable,tableId){
+    let oldTable = $(`#${tableId}`),
         newTable = document.createElement("tbody"); 
-    newTable.id = "userTable"; 
+    newTable.id = tableId; 
+
+    if(tableId === "userTable"){      //hide the friend request button if on friends table 
+        $("#sendFriendRequest").show(); 
+    }else{
+        $("#sendFriendRequest").hide(); 
+    }
+
     if(isNewTable){ //create table 
         users.forEach(user=>{
             let rowNode = document.createElement("tr"),
@@ -43,12 +74,12 @@ let createUserTable = function(users,isNewTable){
             imgNode.setAttribute("height","50");
             imgNode.setAttribute("width","50");
 
-            userNameLink.setAttribute("href",`#${user.username}`.toString());
-            userNameLink.setAttribute("id",user.username); 
-            userNameText.innerText = user.username; 
+            userNameLink.setAttribute("href",`#${user.Username}`.toString());
+            userNameLink.setAttribute("id",user.Username); 
+            userNameText.innerText = user.Username; 
             userNameLink.addEventListener("click",evt=>{
                 evt.preventDefault();
-                setUserModal(evt.target.innerText);
+                setUserModal(evt.target.innerText,tableId); 
                 $("#inspectUser").modal("show");
             }); 
 
@@ -61,6 +92,20 @@ let createUserTable = function(users,isNewTable){
             rowNode.appendChild(userNameNode);
             rowNode.appendChild(firstNameNode);
             rowNode.appendChild(lastNameNode);
+            if(tableId === "friendsTable"){
+                let removeNode = document.createElement("button"),
+                    removeColumn = document.createElement("td"); 
+                removeNode.setAttribute("class","btn btn-danger"); 
+                removeNode.setAttribute("type","button"); 
+                removeNode.setAttribute("id",user.Username); 
+                removeNode.innerText="Remove"; 
+                removeNode.addEventListener("click",evt=>{
+                    deleteFriend(evt.target.id); 
+                }); 
+                removeColumn.appendChild(removeNode); 
+                removeColumn.setAttribute("class","text-right");
+                rowNode.appendChild(removeColumn); 
+            }
             newTable.appendChild(rowNode); 
         });
         oldTable.replaceWith(newTable);  
@@ -86,12 +131,12 @@ let createUserTable = function(users,isNewTable){
             imgNode.setAttribute("height","50");
             imgNode.setAttribute("width","50");
 
-            userNameLink.setAttribute("href",`#${user.username}`.toString());
-            userNameLink.setAttribute("id",user.username); 
-            userNameText.innerText = user.username; 
+            userNameLink.setAttribute("href",`#${user.Username}`.toString());
+            userNameLink.setAttribute("id",user.Username); 
+            userNameText.innerText = user.Username; 
             userNameLink.addEventListener("click",evt=>{
                 evt.preventDefault();
-                setUserModal(evt.target.innerText);
+                setUserModal(evt.target.innerText,tableId); 
                 $("#inspectUser").modal("show");
             }); 
 
@@ -115,33 +160,62 @@ let searchUserTable = function(){
     if($("#searchSiteBar").val().toString().trim() !== ""){
         $.ajax({url: "/home/searchUsers", data: {searchTerm: $("#searchSiteBar").val().toString().trim()}, success: (result)=>{
             if(result !== "error"){
-                createUserTable(result,true); 
+                createUserTable(result,true,"userTable"); 
                 usersList = result;
             }else{  
-                console.log("there was an error"); 
+                setMessage("error","There was an error while searching for users."); 
             }
         }});
     }else{
-        loadUsers(); 
+        getUsers(); 
     }
 }; 
 
-
-
-let setUserModal = function(username){
-    usersList.forEach(user=>{
-        if(user.username === username){
-            if(user.profileImage !== null && user.profileImage !== "null"){
-                $("#inspectProfileImage").attr("src",user.profileImage); 
+let setUserModal = function(username,fromTable){
+    if(fromTable === "userTable"){
+        usersList.forEach(user=>{
+            if(user.Username === username){
+                if(user.profileImage !== null && user.profileImage !== "null"){
+                    $("#inspectProfileImage").attr("src",user.profileImage); 
+                }
+                $("#inspectUsername").text(user.Username);
+                $("#inspectFirstName").text(user.FirstName);
+                $("#inspectLastName").text(user.LastName);
+                $("#inspectBio").text(user.bio);
+                $("#inspectEmail").text(user.email);
+                $("#inspectPhoneNumber").text(user.phone_number);
             }
-            $("#inspectUsername").text(user.username);
-            $("#inspectFirstName").text(user.FirstName);
-            $("#inspectLastName").text(user.LastName);
-            $("#inspectBio").text(user.bio);
-            $("#inspectEmail").text(user.email);
-            $("#inspectPhoneNumber").text(user.phone_number);
-        }
-    }); 
+        }); 
+
+    }else if (fromTable === "friendsTable"){
+        friendsList.forEach(friend=>{
+            if(friend.Username === username){
+                if(friend.profileImage !== null && friend.profileImage !== "null"){
+                    $("#inspectProfileImage").attr("src",friend.profileImage); 
+                }
+                $("#inspectUsername").text(friend.Username);
+                $("#inspectFirstName").text(friend.FirstName);
+                $("#inspectLastName").text(friend.LastName);
+                $("#inspectBio").text(friend.bio);
+                $("#inspectEmail").text(friend.email);
+                $("#inspectPhoneNumber").text(friend.phone_number);
+            }
+        }); 
+    }else if(fromTable === "friendsPendingTable"){
+        friendsPendingList.forEach(friend=>{
+            if(friend.Username === username){
+                if(friend.profileImage !== null && friend.profileImage !== "null"){
+                    $("#inspectProfileImage").attr("src",friend.profileImage); 
+                }
+                $("#inspectUsername").text(friend.Username);
+                $("#inspectFirstName").text(friend.FirstName);
+                $("#inspectLastName").text(friend.LastName);
+                $("#inspectBio").text(friend.bio);
+                $("#inspectEmail").text(friend.email);
+                $("#inspectPhoneNumber").text(friend.phone_number);
+            }
+        }); 
+    }
 }; 
 
 let getAdditonalInfo = function(){
@@ -153,11 +227,7 @@ let getAdditonalInfo = function(){
             $("#profileImage").attr("src",result.profileImage === "null" ? defaultUserImage: result.profileImage); 
             $("#imageLink").val(result.profileImage === "null" ? "": result.profileImage); 
         }else{
-            $("#errorMessages").text("There was an error getting your profile information."); 
-            $("#errorMessages").removeClass("hide"); 
-            setTimeout(()=>{
-                $("#errorMessages").addClass("hide"); 
-            },10000);
+            setMessage("error","There was an error getting your profile information.");
         }
     }});
 }; 
@@ -166,50 +236,161 @@ let sendFriendRequest = function(username){
     $("#inspectUser").modal("hide");
     $.ajax({url: "/home/sendFriendRequest", data: {friendTo: username},  success: (result)=>{
         if(result === "error"){
-            $("#errorMessages").text("There was an error sending friend request."); 
-            $("#errorMessages").removeClass("hide"); 
-            setTimeout(()=>{
-                $("#errorMessages").addClass("hide"); 
-            },10000);
+            setMessage("error","There was an error sending friend request."); 
         }else if(result === "requested"){
-            $("#errorMessages").text("This friend has already been requested."); 
-            $("#errorMessages").removeClass("hide"); 
-            setTimeout(()=>{
-                $("#errorMessages").addClass("hide"); 
-            },10000);
+            setMessage("error", "This friend has already been requested.");
         }else{
-            $("#successMessages").text("Friend request was sent successfully!"); 
-            $("#successMessages").removeClass("hide"); 
-            setTimeout(()=>{
-                $("#successMessages").addClass("hide"); 
-            },10000);
+            setMessage("success","Friend request was sent successfully!");
         }
     }});
+};
+
+let createPendingRequestTable = function(pending){
+    let oldTable = $("#friendsPendingTable"),
+        newTable = document.createElement("tbody"); 
+    newTable.id = "#friendsPendingTable"; 
+    pending.forEach(request=>{
+        let rowNode = document.createElement("tr"),
+        picNode = document.createElement("td"),
+        imgNode = document.createElement("img"), 
+        userNameNode = document.createElement("td"),
+        userNameText = document.createElement("div"), 
+        userNameLink = document.createElement("a"), 
+        statusNode = document.createElement("td"),
+        acceptNode = document.createElement("button"),
+        rejectNode = document.createElement("button"); 
+        rowNode.setAttribute("scope","row");
+        if(request.profileImage === null || request.profileImage === "null"){
+            imgNode.setAttribute("src",defaultUserImage); 
+        }else{
+            imgNode.setAttribute("src",user.profileImage); 
+        }
+        imgNode.setAttribute("alt","profile pic");
+        imgNode.classList.add("img-rounded"); 
+        imgNode.classList.add("img-thumbnail"); 
+        imgNode.setAttribute("height","50");
+        imgNode.setAttribute("width","50");
+
+        userNameLink.setAttribute("href",`#${request.Username}`.toString());
+        userNameLink.setAttribute("id",request.Username); 
+        userNameText.innerText = request.Username; 
+        userNameLink.addEventListener("click",evt=>{
+            evt.preventDefault();
+            setUserModal(evt.target.innerText,"friendsPendingTable"); 
+            $("#inspectUser").modal("show");
+        }); 
+
+        acceptNode.setAttribute("class","btn btn-primary"); 
+        acceptNode.setAttribute("type","button"); 
+        acceptNode.setAttribute("id",request.Username); 
+        acceptNode.innerText="Accept"; 
+        acceptNode.addEventListener("click",evt=>{
+            acceptFriendRequest(evt.target.id); 
+        }); 
+
+        rejectNode.setAttribute("class","btn btn-danger"); 
+        rejectNode.setAttribute("type","button"); 
+        rejectNode.setAttribute("id",request.Username);
+        rejectNode.innerText="Reject";
+        rejectNode.addEventListener("click",evt=>{
+            rejectFriendRequest(evt.target.id); 
+        }); 
+
+        statusNode.setAttribute("class","text-right");
+
+        statusNode.appendChild(acceptNode);
+        statusNode.appendChild(rejectNode);
+        userNameLink.appendChild(userNameText); 
+        userNameNode.appendChild(userNameLink); 
+        picNode.appendChild(imgNode); 
+        rowNode.appendChild(picNode); 
+        rowNode.appendChild(userNameNode);
+        rowNode.appendChild(statusNode);
+        newTable.appendChild(rowNode); 
+    }); 
+    oldTable.replaceWith(newTable);
 }; 
 
+let getPendingRequests = function(){
+    $.ajax({type: "GET",url: "/home/getPendingFriends", success: (result)=>{
+        if(result !== "error"){  
+            friendsPendingList = result;
+            createPendingRequestTable(result);  
+        }else{
+            setMessage("error","error while getting pending friend requests."); 
+        }
+        userCount += userAmount; 
+    }}); 
+}; 
+
+let getFriends = function(){
+    $.ajax({type: "GET",url: "/home/getFriends", success: (result)=>{
+        if(result !== "error"){
+            createUserTable(result,true,"friendsTable"); 
+            friendsList = result; 
+        }else{
+            setMessage("error","error while getting friends list."); 
+        }
+        userCount += userAmount; 
+    }}); 
+}; 
+
+let acceptFriendRequest = function(username){
+    $.ajax({type: "GET",url: "/home/addFriend", data: {friend_username: username}, success: (result)=>{
+        console.log(result); 
+        if(result !== "error"){
+            setMessage("success",`You are now friends with ${username}!`); 
+        }else{
+            setMessage("error",`There was an error accepting the friend request from ${username}`); 
+        }
+    }}); 
+}; 
+
+let rejectFriendRequest = function(username){
+    $.ajax({type: "GET",url: "/home/deleteFriendRequest", data: {friend_username: username}, success: (result)=>{
+        console.log(result); 
+        if(result !== "error"){
+            setMessage("success",`The friend request from ${username} was deleted!`); 
+        }else{
+            setMessage("error",`There was an error deleting the friend request from ${username}`); 
+        }
+    }});  
+}; 
+
+let deleteFriend = function(username){
+    $.ajax({type: "GET",url: "/home/deleteFriend", data: {friend_username: username}, success: (result)=>{
+        console.log(result);
+        if(result !== "error"){
+            setMessage("success",`${username} was removed from your friends list!`); 
+        }else{
+            setMessage("error",`There was an error removing ${username} from your friends list.`); 
+        }
+    }});  
+};
+
 $(document).ready(()=>{
-    $("#imageLink").change(evt=>{
-        $("#profileImage").attr("src",$("#imageLink").val().trim()); 
+    //TODO: seperate js into different files based on tabs 
+    //------------friends tab-------------------
+    $("#pills-friends-tab").click(evt=>{
+        getPendingRequests(); 
+        getFriends(); 
     }); 
-
-    $("#pills-profile-tab").click(evt=>{
-        getAdditonalInfo();
-    });
-
+    
+    //-------------search tab -------------------
     $("#pills-search-tab").click(evt=>{//load users when tab is clicked
         userCount = 0;
         userAmount = 15;
-        loadUsers();
+        getUsers();
     });
-
+    
     $("#loadMoreUsers").click(evt=>{ 
-        loadUsers();
+        getUsers();
     }); 
-
+    
     $("#searchSiteButton").click(evt=>{ //search on click of search button 
         searchUserTable();
     }); 
-
+    
     $("#searchSiteBar").keypress(evt =>{ //search on enter key 
         if(evt.key === "Enter"){
             searchUserTable();
@@ -219,8 +400,16 @@ $(document).ready(()=>{
     $("#sendFriendRequest").click(evt=>{
         sendFriendRequest($("#inspectUsername").text()); 
     }); 
-
-    $("#saveChanges").click(evt=>{
+    
+    
+    //----------------profile tab-------------------
+    $("#pills-profile-tab").click(evt=>{
+        getAdditonalInfo();
+    });
+    $("#imageLink").change(evt=>{
+        $("#profileImage").attr("src",$("#imageLink").val().trim()); 
+    }); 
+    $("#saveChanges").click(evt=>{  //save profile changes 
         //check these for validity and sanitize 
         let updateObj = {
             bio: $("#bio").val().trim(),
@@ -230,17 +419,9 @@ $(document).ready(()=>{
         }; 
         $.ajax({type:"POST",method: "POST", url:"/home/updateProfile", data: updateObj, success: (res)=>{
             if(res === "success"){
-                $("#successMessages").text("Your profile was update successfully!"); 
-                $("#successMessages").removeClass("hide"); 
-                setTimeout(()=>{
-                    $("#successMessages").addClass("hide"); 
-                },10000); 
+                setMessage("success","Your profile was update successfully!"); 
             }else{
-                $("#errorMessages").text("There was an error updating your profile."); 
-                $("#errorMessages").removeClass("hide"); 
-                setTimeout(()=>{
-                    $("#errorMessages").addClass("hide"); 
-                },10000); 
+                setMessage("error","There was an error updating your profile."); 
             } 
         }}); 
     }); 

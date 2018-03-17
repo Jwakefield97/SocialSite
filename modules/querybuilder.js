@@ -9,7 +9,7 @@ obj.findUser = function(username){
 };
 
 obj.findUsers = function(startIndex,endIndex){
-    return (`SELECT u.username, u.FirstName, u.LastName, a.profileImage, a.bio, a.email, a.phone_number FROM user u LEFT JOIN user_additional a ON u.username=a.username ORDER BY u.username ASC LIMIT ${startIndex},${endIndex}`).toString();
+    return (`SELECT u.Username, u.FirstName, u.LastName, a.profileImage, a.bio, a.email, a.phone_number FROM user u LEFT JOIN user_additional a ON u.username=a.username ORDER BY u.username ASC LIMIT ${startIndex},${endIndex}`).toString();
 }; 
 
 obj.findAdditionalInfo = function(username){
@@ -25,7 +25,7 @@ obj.updateAdditonalInfo = function(username,info){
 };
 
 obj.searchUsers = function(searchTerm){
-    return (`SELECT u.username, u.FirstName, u.LastName, a.profileImage, a.bio, a.email, a.phone_number FROM user u LEFT JOIN user_additional a ON u.username=a.username WHERE u.username LIKE '%${searchTerm.toString().trim()}%' OR u.FirstName LIKE '%${searchTerm.toString().trim()}%' OR u.LastName LIKE '%${searchTerm.toString().trim() || null}%' ORDER BY u.username ASC`).toString(); 
+    return (`SELECT u.Username, u.FirstName, u.LastName, a.profileImage, a.bio, a.email, a.phone_number FROM user u LEFT JOIN user_additional a ON u.username=a.username WHERE u.username LIKE '%${searchTerm.toString().trim()}%' OR u.FirstName LIKE '%${searchTerm.toString().trim()}%' OR u.LastName LIKE '%${searchTerm.toString().trim() || null}%' ORDER BY u.username ASC`).toString(); 
 };
 
 obj.findFriendRequests = function(from,to){
@@ -33,7 +33,7 @@ obj.findFriendRequests = function(from,to){
 };
 
 obj.addFriend = function(username,friend){
-    return (`INSERT INTO friend (username,friend_username,time_friended) VALUES (${username.toString().trim()},${friend.toString().trim()},NOW())`).toString(); 
+    return (`INSERT INTO friend (username,friend_username,time_friended) VALUES ('${username.toString().trim()}','${friend.toString().trim()}',NOW())`).toString(); 
 }
 
 obj.getFriends = function(username){
@@ -51,5 +51,8 @@ obj.deleteFriendRequest = function(username, friend){
     return (`DELETE FROM friends_pending WHERE username = '${friend.toString().trim()}' AND friend_username = '${username.toString().trim()}'`).toString();
 };
 
+obj.deleteFriend = function(username, friend){
+    return (`DELETE FROM friend WHERE username = '${username.toString().trim()}' AND friend_username = '${friend.toString().trim()}'`).toString();
+};
 module.exports = obj; 
 

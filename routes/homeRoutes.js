@@ -104,4 +104,12 @@ route.get("/deleteFriendRequest",(req,res)=>{
     }); 
 });
 
+route.get("/deleteFriend",(req,res)=>{
+    let params = req.query; 
+    dao.deleteFriend(req.session.username, params.friend_username).then(result=>{
+        res.send(result); 
+    }).catch(err=>{
+        console.log(err); 
+    }); 
+});
 module.exports = route; 

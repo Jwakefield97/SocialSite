@@ -238,4 +238,19 @@ obj.deleteFriendRequest = function(username,friend_username){
     }); 
 }; 
 
+obj.deleteFriend = function(username,friend_username){
+    return new Promise ((req,res)=>{
+        const dbconn = mysql.createConnection(dbprops);
+        dbconn.query(querybuilder.deleteFriend(username,friend_username), (err,result)=>{
+            if(err){
+                dbconn.destroy();
+                res("error");
+            }else{
+                dbconn.destroy();
+                res("success"); 
+            }
+        });
+    }); 
+}; 
+
 module.exports = obj; 

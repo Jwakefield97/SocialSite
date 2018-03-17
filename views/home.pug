@@ -20,13 +20,14 @@ block body
                     li(class="nav-item")
                         a(class="nav-link",href="/logout",role="tab",aria-controls="pills-profile",aria-selected="false") Logout 
 
+        div(class="row")
+            div(class="col-sm-10 mt-2 mx-auto")
+                div(id="errorMessages",class="alert alert-danger hide")
+                div(id="successMessages",class="alert alert-success hide")
+                div(id="infoMessages",class="alert alert-info hide")
         div(class="row")    
             div(class="col-sm-10 mx-auto mt-3")
                 div(class="tab-content page-content",id="pills-tabContent")
-                    div(class="row")
-                        div(class="col-sm-6 mx-auto")
-                            div(id="errorMessages",class="alert alert-danger hide")
-                            div(id="successMessages",class="alert alert-success hide")
                     div(class="tab-pane fade show active",id="pills-feed",role="tabpanel",aria-labelledby="pills-feed-tab")
                         div(class="row")
                             div(class="col-sm-12 mx-auto")
@@ -53,14 +54,30 @@ block body
                     div(class="tab-pane fade",id="pills-friends",role="tabpanel",aria-labelledby="pills-friends-tab")
                         div(class="row")
                             div(class="col-sm-12 mx-auto")
-                                table(id="friendsFullTable",class="table table-striped")
+                                h2 Friend requests
+                        div(class="row")
+                            div(class="col-sm-12 mx-auto")
+                                table(id="friendsPendingFullTable",class="table table-striped")
                                     thead   
                                         tr
                                             th(scope="row") Profile Pic
                                             th(scope="row") Username
                                             th(scope="row") Status
-                                    tbody(id="friendTable")
-                                button(class="btn btn-success float-right mb-3",id="loadMoreFriends",type="button") Load More
+                                    tbody(id="friendsPendingTable")
+                        div(class="row")
+                            div(class="col-sm-12 mx-auto")
+                                h2 Friends
+                        div(class="row")
+                            div(class="col-sm-12 mx-auto")
+                                table(id="friendsFullTable",class="table table-striped")
+                                    thead   
+                                        tr
+                                            th(scope="row") Profile Pic
+                                            th(scope="row") Username
+                                            th(scope="row") FirstName
+                                            th(scope="row") LastName
+                                            th(scope="row")
+                                    tbody(id="friendsTable")
                     div(class="tab-pane fade",id="pills-profile",role="tabpanel",aria-labelledby="pills-profile-tab")
                         div(class="row mt-3")
                             div(class="col-sm-12")
@@ -119,8 +136,6 @@ block body
                                     span(id="inspectPhoneNumber",class="label label-default") 
                             button(class="btn btn-success float-left mt-2 mb-2",id="sendFriendRequest",type="button") Send friend request
 
-
-                    
     script(src="/js/home.js")
 
 
