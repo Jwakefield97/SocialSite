@@ -358,13 +358,8 @@ let acceptFriendRequest = function(username){
         if(result !== "error"){
             setMessage("success",`You are now friends with ${username}!`); 
             //remove the user from pending. add to friends and redraw both tables. 
-            console.log(friendsList); 
-            console.log(friendsPendingList);
             friendsList.push(findUserObj(friendsPendingList,username)); 
             removeFriendFromPendingList(username);
-            console.log(friendsList); 
-            console.log(friendsPendingList);
-
             createUserTable(friendsList,true,"friendsTable"); 
             createPendingRequestTable(friendsPendingList);
 
@@ -377,7 +372,9 @@ let acceptFriendRequest = function(username){
 let rejectFriendRequest = function(username){
     $.ajax({type: "GET",url: "/home/deleteFriendRequest", data: {friend_username: username}, success: (result)=>{
         if(result !== "error"){
-            setMessage("success",`The friend request from ${username} was deleted!`); 
+            setMessage("success",`The friend request from ${username} was deleted!`);
+            removeFriendFromPendingList(username); 
+            createPendingRequestTable(friendsPendingList);
         }else{
             setMessage("error",`There was an error deleting the friend request from ${username}`); 
         }
@@ -388,6 +385,8 @@ let deleteFriend = function(username){
     $.ajax({type: "GET",url: "/home/deleteFriend", data: {friend_username: username}, success: (result)=>{
         if(result !== "error"){
             setMessage("success",`${username} was removed from your friends list!`); 
+            removeFriendFromList(username); 
+            createUserTable(friendsList,true,"friendsTable"); 
         }else{
             setMessage("error",`There was an error removing ${username} from your friends list.`); 
         }
