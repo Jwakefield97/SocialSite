@@ -395,6 +395,14 @@ let deleteFriend = function(username){
 
 $(document).ready(()=>{
     //TODO: seperate js into different files based on tabs 
+
+    //--------------posts tab------------------
+    $("#createPost").click(evt=>{
+        $("#createPostModal").modal("show"); 
+    }); 
+
+
+
     //------------friends tab-------------------
     $("#pills-friends-tab").click(evt=>{
         getPendingRequests(); 

@@ -3,6 +3,12 @@ extends master-template.pug
 block head 
     title Home page
     style.
+        #pills-tab{
+            background-color: white; 
+        }
+        ul {
+            list-style-type: none;
+        }
       
 block body
     div(class="container-fluid")
@@ -31,7 +37,23 @@ block body
                     div(class="tab-pane fade show active",id="pills-feed",role="tabpanel",aria-labelledby="pills-feed-tab")
                         div(class="row")
                             div(class="col-sm-12 mx-auto")
-                                div panel 1
+                                div(class="row")
+                                    div(class="col-sm-12 mx-auto mb-3")
+                                        button(class="btn btn-outline-primary",id="createPost",type="button") Create Post
+                                div(class="row")
+                                    div(class="col-sm-8 mx-auto")
+                                        ul(id="postList")
+                                            li  
+                                                div(class="card")
+                                                    div(class="header")
+                                                        img(height="100",src="/profile_images/defaultProfileImage.png",width="100",class="img-thumbnail img-rounded float-left" alt="No profile image")
+                                                    div(class="card-body")
+                                                        p(class="card-text").
+                                                            This is the template for posts.
+                                                            thank you for reading. 
+                                                    div(class="card-footer text-muted")
+                                                        div(class="card-text") Date: 3/17/2018    
+                                
                     div(class="tab-pane fade",id="pills-search",role="tabpanel",aria-labelledby="pills-search-tab")
                         div(class="row")
                             div(class="col-sm-12 mx-auto")
@@ -135,8 +157,18 @@ block body
                                 b
                                     span(id="inspectPhoneNumber",class="label label-default") 
                             button(class="btn btn-success float-left mt-2 mb-2",id="sendFriendRequest",type="button") Send friend request
+        div(id="createPostModal",class="modal fade bd-example-modal-lg",tabindex="-1",role="dialog",aria-labelledby="myLargeModalLabel",aria-hidden="true")
+            div(class="modal-dialog modal-lg")
+                div(class="modal-content")
+                    div(class="row px-3 py-3")
+                        div(class="col-sm-12 mx-auto")
+                            div(class="form-group")
+                                h3(for="modalPostText") Post Text: 
+                                textarea(id="modalPostText",class="form-control", rows="6")
+                            button(class="btn btn-success float-right mt-2 mb-2",id="createPostModalButton",type="button") Create post 
 
     script(src="/js/home.js")
+
 
 
 
