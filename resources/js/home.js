@@ -5,7 +5,16 @@ let userCount = 0, //how many users are currently on the page
     usersList = [],
     friendsList = [],
     friendsPendingList = []; 
-
+let formatDate = function(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+};
 
 let setMessage = function(type,msg){
     if(type === "error"){
@@ -416,7 +425,7 @@ let createPostsList = function(posts){
             footer.setAttribute("class","card-footer text-muted"); 
             footerD.setAttribute("class","card-text");
             footerD.setAttribute("class","card-text");
-            footerD.innerText = `Date: ${item.time_created}`;
+            footerD.innerText = `Date: ${formatDate(new Date(item.time_created))}`;
             li.setAttribute("class","mb-5");
 
             header.appendChild(headerImg);
@@ -463,7 +472,7 @@ $(document).ready(()=>{
         $("#createPostModal").modal("show"); 
     }); 
 
-    $("#pills-feed").click(evt=>{
+    $("#pills-feed-tab").click(evt=>{
         getPosts(); 
     }); 
 
@@ -474,6 +483,7 @@ $(document).ready(()=>{
             $.ajax({type: "POST",url: "/home/createPost", data: {post_text: postText}, success: (result)=>{
                 if(result !== "error"){
                     //TODO: add post to feed
+                    getPosts();
                     setMessage("success","post was created successfully!"); 
                 }else{
                     setMessage("error",`An error occurred while creating post.`); 
