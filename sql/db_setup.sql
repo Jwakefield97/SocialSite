@@ -4,7 +4,7 @@
 	Id INT NOT NULL AUTO_INCREMENT,
     FirstName VARCHAR(200) NOT NULL,
     LastName VARCHAR(200) NOT NULL,
-    Username VARCHAR(200) NOT NULL, friends_pending
+    Username VARCHAR(200) NOT NULL, 
     Password VARCHAR(200) NOT NULL, 
     DateJoined DATETIME DEFAULT CURRENT_TIMESTAMP, 
     PRIMARY KEY (Id) 
@@ -34,3 +34,11 @@
     time_requested DATETIME DEFAULT CURRENT_TIMESTAMP, 
     PRIMARY KEY (username,friend_username)) 
 ); */ 
+
+/*CREATE TABLE posts(
+  id INT NOT NULL AUTO_INCREMENT, 
+  poster_username VARCHAR(200) NOT NULL,
+  post_text VARCHAR(2000) NOT NULL, 
+  time_created DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id) 
+);*/

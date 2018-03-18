@@ -112,4 +112,17 @@ route.get("/deleteFriend",(req,res)=>{
         console.log(err); 
     }); 
 });
+
+route.post("/createPost",(req,res)=>{
+    dao.createPost(req.session.username, req.body.post_text).then(result=>{
+        res.send(result); 
+    }).catch(err=>{
+        console.log(err); 
+    })
+}); 
+
+route.get("/getPosts",(req,res)=>{
+    
+}); 
+
 module.exports = route; 

@@ -398,10 +398,24 @@ $(document).ready(()=>{
 
     //--------------posts tab------------------
     $("#createPost").click(evt=>{
+        $("#modalPostText").val(""); 
         $("#createPostModal").modal("show"); 
     }); 
 
-
+    $("#createPostModalButton").click(evt=>{
+        $("#createPostModal").modal("hide"); 
+        let postText = $("#modalPostText").val().trim(); 
+        if(postText.length !== 0 || postText.length !== 2000){
+            $.ajax({type: "POST",url: "/home/createPost", data: {post_text: postText}, success: (result)=>{
+                if(result !== "error"){
+                    //TODO: add post to feed
+                    setMessage("success","post was created successfully!"); 
+                }else{
+                    setMessage("error",`An error occurred while creating post.`); 
+                }
+            }}); 
+        }
+    }); 
 
     //------------friends tab-------------------
     $("#pills-friends-tab").click(evt=>{

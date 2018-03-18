@@ -54,5 +54,9 @@ obj.deleteFriendRequest = function(username, friend){
 obj.deleteFriend = function(username, friend){
     return (`DELETE FROM friend WHERE username = '${username.toString().trim()}' AND friend_username = '${friend.toString().trim()}'`).toString();
 };
+
+obj.createPost = function(username,text){
+    return (`INSERT INTO posts (poster_username,post_text) VALUES ('${username.toString().trim()}','${text.toString().trim()}')`).toString(); 
+}; 
 module.exports = obj; 
 
