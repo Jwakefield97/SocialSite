@@ -382,7 +382,51 @@ let rejectFriendRequest = function(username){
 }; 
 
 let createPostsList = function(posts){
+    let oldList = $("#postList"),
+        newList = document.createElement("ul"); 
+    newList.id = "postList"; 
+    posts.forEach(item=>{
+        let li = document.createElement("li"),
+            card = document.createElement("div"),
+            header = document.createElement("div"),
+            headerImg = document.createElement("img"),
+            body = document.createElement("div"),
+            bodyP = document.createElement("p"),
+            footer = document.createElement("div"),
+            footerD = document.createElement("div"); 
 
+            card.setAttribute("class","card");
+            header.setAttribute("class","header")
+            headerImg.setAttribute("class","img-thumbnail img-rounded float-left"); 
+            headerImg.setAttribute("height","100");
+            headerImg.setAttribute("width","100"); 
+            headerImg.setAttribute("alt","profile image"); 
+            headerImg.setAttribute("data-toggle","tooltip"); 
+            headerImg.setAttribute("data-placement","top");
+            headerImg.setAttribute("title",item.poster_username); 
+            if(item.profileImage === null || item.profileImage === "null"){
+                headerImg.setAttribute("src",defaultUserImage); 
+            }else{
+                headerImg.setAttribute("src",item.profileImage); 
+            }
+            body.setAttribute("class", "card-body"); 
+            bodyP.setAttribute("class","card-text");
+            bodyP.innerText = item.post_text;
+            footer.setAttribute("class","card-footer text-muted"); 
+            footerD.setAttribute("class","card-text");
+            footerD.setAttribute("class","card-text");
+            footerD.innerText = `Date: ${item.time_created}`;
+
+
+            header.appendChild(headerImg);
+            body.appendChild(bodyP); 
+            footer.appendChild(footerD); 
+            card.appendChild(header);
+            card.appendChild(body);
+            card.appendChild(footer); 
+            newList.appendChild(card); 
+    }); 
+    oldList.replaceWith(newList); 
 }; 
 
 let getPosts = function(){
@@ -390,7 +434,7 @@ let getPosts = function(){
         if(result !== "error"){ 
             createPostsList(result); 
         }else{
-            setMessage("error",`There was an error deleting the friend request from ${username}`); 
+            setMessage("error",`An error occurred while retrieving posts.`); 
         }
     }});
 }; 
