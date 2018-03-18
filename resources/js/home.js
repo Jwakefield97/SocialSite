@@ -396,6 +396,7 @@ let createPostsList = function(posts){
             footerD = document.createElement("div"); 
 
             card.setAttribute("class","card");
+            card.setAttribute("style","box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);");
             header.setAttribute("class","header")
             headerImg.setAttribute("class","img-thumbnail img-rounded float-left"); 
             headerImg.setAttribute("height","100");
@@ -416,7 +417,7 @@ let createPostsList = function(posts){
             footerD.setAttribute("class","card-text");
             footerD.setAttribute("class","card-text");
             footerD.innerText = `Date: ${item.time_created}`;
-
+            li.setAttribute("class","mb-5");
 
             header.appendChild(headerImg);
             body.appendChild(bodyP); 
@@ -424,7 +425,8 @@ let createPostsList = function(posts){
             card.appendChild(header);
             card.appendChild(body);
             card.appendChild(footer); 
-            newList.appendChild(card); 
+            li.appendChild(card)
+            newList.appendChild(li); 
     }); 
     oldList.replaceWith(newList); 
 }; 
