@@ -118,11 +118,15 @@ route.post("/createPost",(req,res)=>{
         res.send(result); 
     }).catch(err=>{
         console.log(err); 
-    })
+    });
 }); 
 
 route.get("/getPosts",(req,res)=>{
-    
+    dao.getPosts(req.session.username).then(result=>{
+        res.send(result); 
+    }).catch(err=>{
+        console.log(err); 
+    });
 }); 
 
 module.exports = route; 

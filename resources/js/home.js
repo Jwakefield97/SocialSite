@@ -281,7 +281,7 @@ let createPendingRequestTable = function(pending){
         if(request.profileImage === null || request.profileImage === "null"){
             imgNode.setAttribute("src",defaultUserImage); 
         }else{
-            imgNode.setAttribute("src",user.profileImage); 
+            imgNode.setAttribute("src",request.profileImage); 
         }
         imgNode.setAttribute("alt","profile pic");
         imgNode.classList.add("img-rounded"); 
@@ -381,6 +381,20 @@ let rejectFriendRequest = function(username){
     }});  
 }; 
 
+let createPostsList = function(posts){
+
+}; 
+
+let getPosts = function(){
+    $.ajax({type: "GET",url: "/home/getPosts", success: (result)=>{
+        if(result !== "error"){ 
+            createPostsList(result); 
+        }else{
+            setMessage("error",`There was an error deleting the friend request from ${username}`); 
+        }
+    }});
+}; 
+
 let deleteFriend = function(username){
     $.ajax({type: "GET",url: "/home/deleteFriend", data: {friend_username: username}, success: (result)=>{
         if(result !== "error"){
@@ -395,11 +409,16 @@ let deleteFriend = function(username){
 
 $(document).ready(()=>{
     //TODO: seperate js into different files based on tabs 
-
+    getPosts(); 
+    $('[data-toggle="tooltip"]').tooltip(); 
     //--------------posts tab------------------
     $("#createPost").click(evt=>{
         $("#modalPostText").val(""); 
         $("#createPostModal").modal("show"); 
+    }); 
+
+    $("#pills-feed").click(evt=>{
+        getPosts(); 
     }); 
 
     $("#createPostModalButton").click(evt=>{

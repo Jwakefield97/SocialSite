@@ -37,7 +37,7 @@ obj.addFriend = function(username,friend){
 }
 
 obj.getFriends = function(username){
-    return (`SELECT u.username, u.FirstName, u.LastName, u.profileImage FROM (SELECT u.Username,u.FirstName,u.LastName,ua.profileImage FROM user u LEFT JOIN user_additional ua ON u.username = ua.username) as u, friend f WHERE f.username = '${username.toString().trim()}' AND u.Username = f.friend_username`).toString(); 
+    return (`SELECT u.username, u.FirstName, u.LastName, u.profileImage FROM (SELECT u.Username,u.FirstName,u.LastName,ua.profileImage FROM user u LEFT JOIN user_additional ua ON u.username = ua.username) as u, friend f WHERE f.username = '${username.toString().trim()}' AND u.Username = f.friend_username OR f.friend_username = '${username.toString().trim()}' AND u.Username = f.username`).toString(); 
 };
 obj.getPendingFriends = function(username){
     return (`SELECT u.Username, u.FirstName, u.LastName, u.profileImage, fp.request_status FROM (SELECT u.Username,u.FirstName,u.LastName,ua.profileImage FROM user u LEFT JOIN user_additional ua ON u.username = ua.username) as u, friends_pending fp WHERE u.Username = fp.username AND fp.friend_username = '${username.toString().trim()}'`).toString(); 
@@ -58,5 +58,11 @@ obj.deleteFriend = function(username, friend){
 obj.createPost = function(username,text){
     return (`INSERT INTO posts (poster_username,post_text) VALUES ('${username.toString().trim()}','${text.toString().trim()}')`).toString(); 
 }; 
+
+obj.getPosts = function(username){
+    return (`SELECT DISTINCT p.poster_username, p.post_text, p.time_created, u.profileImage FROM  friend f LEFT JOIN posts p ON f.friend_username=p.poster_username OR f.username=p.poster_username LEFT JOIN (SELECT u.Username, ua.profileImage FROM user u LEFT JOIN user_additional ua ON u.Username = ua.username) AS u ON u.Username = p.poster_username WHERE f.username = '${username.toString().trim()}' OR f.friend_username = '${username.toString().trim()}' ORDER BY p.time_created DESC`).toString(); 
+}; 
+
+
 module.exports = obj; 
 

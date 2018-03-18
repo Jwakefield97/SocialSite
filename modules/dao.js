@@ -268,4 +268,19 @@ obj.createPost = function(username,postText){
     }); 
 }; 
 
+obj.getPosts = function(username){
+    return new Promise ((res,rej)=>{
+        const dbconn = mysql.createConnection(dbprops);
+        dbconn.query(querybuilder.getPosts(username),(err,result)=>{
+            if(err){
+                dbconn.destroy();
+                res("error");
+            }else{
+                dbconn.destroy();
+                res(result); 
+            }
+        }); 
+    }); 
+};
+
 module.exports = obj; 
