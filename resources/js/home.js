@@ -465,6 +465,8 @@ let deleteFriend = function(username){
 
 $(document).ready(()=>{
 
+    $("#test").text($(window).width()+"--"+window.visualViewport.width+"--"+window.innerWidth); 
+
     //add swipe to mobile
     let htmlTag = document.getElementsByTagName("html")[0],
         clientX,
