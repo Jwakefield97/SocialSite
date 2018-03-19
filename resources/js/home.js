@@ -465,6 +465,63 @@ let deleteFriend = function(username){
 
 $(document).ready(()=>{
 
+    //add swipe to mobile
+    let htmlTag = document.getElementsByTagName("html")[0],
+        clientX,
+        lastTab = "pills-feed-tab";
+    htmlTag.addEventListener('touchstart', function(e){
+        //check to make sure client isn't scrolling on table
+        let node = (e.target.nodeName).toLowerCase();
+        if(node !== "tbody" && node !== "thead" && node !== "table" && node !== "td" && node !== "tr" && node !== "img" && node !== "a"){
+            clientX = e.touches[0].clientX;
+        }
+    }, false);
+
+    htmlTag.addEventListener('touchend', e => {
+        let deltaX = e.changedTouches[0].clientX - clientX,
+            threshHold = 125;
+        let node = (e.target.nodeName).toLowerCase();
+        if(node !== "tbody" && node !== "thead" && node !== "table" && node !== "td" && node !== "tr" && node !== "img" && node !== "a"){
+            if(deltaX < 0){ //swiped right 
+                if(Math.abs(deltaX) > threshHold){
+                    if(lastTab === "pills-feed-tab"){
+                        lastTab = "pills-search-tab"; 
+                        $("#pills-search-tab").click();
+                    }else if(lastTab === "pills-search-tab"){
+                        lastTab = "pills-friends-tab"; 
+                        $("#pills-friends-tab").click();
+                    }else if(lastTab === "pills-friends-tab"){
+                        lastTab = "pills-profile-tab"; 
+                        $("#pills-profile-tab").click();
+                    }else if(lastTab === "pills-profile-tab"){
+                        lastTab = "pills-profile-tab"; 
+                        $("#pills-profile-tab").click(); 
+                    }
+                }
+            }else{
+                if(Math.abs(deltaX) > threshHold){
+                    if(lastTab === "pills-profile-tab"){
+                        lastTab = "pills-friends-tab"; 
+                        $("#pills-friends-tab").click();
+                    }else if(lastTab === "pills-friends-tab"){
+                        lastTab = "pills-search-tab"; 
+                        $("#pills-search-tab").click();
+                    }else if(lastTab === "pills-search-tab"){
+                        lastTab = "pills-feed-tab"; 
+                        $("#pills-feed-tab").click();
+                    }else if(lastTab === "pills-feed-tab"){
+                        lastTab = "pills-feed-tab"; 
+                        $("#pills-feed-tab").click(); 
+                    }
+                }
+            }
+        } 
+        clientX = 0; 
+    }, false);
+
+
+
+
     if($(window).width() < 545){
         $("#usersFullTable").addClass("table-responsive"); 
         $("#friendsPendingFullTable").addClass("table-responsive"); 
@@ -492,6 +549,7 @@ $(document).ready(()=>{
     }); 
 
     $("#pills-feed-tab").click(evt=>{
+        lastTab="pills-feed-tab"; 
         getPosts(); 
     }); 
 
@@ -513,12 +571,14 @@ $(document).ready(()=>{
 
     //------------friends tab-------------------
     $("#pills-friends-tab").click(evt=>{
+        lastTab="pills-friends-tab"; 
         getPendingRequests(); 
         getFriends(); 
     }); 
     
     //-------------search tab -------------------
     $("#pills-search-tab").click(evt=>{//load users when tab is clicked
+        lastTab="pills-search-tab"; 
         userCount = 0;
         userAmount = 15;
         getUsers();
@@ -545,6 +605,7 @@ $(document).ready(()=>{
     
     //----------------profile tab-------------------
     $("#pills-profile-tab").click(evt=>{
+        lastTab="pills-profile-tab"; 
         getAdditonalInfo();
     });
     $("#imageLink").change(evt=>{
