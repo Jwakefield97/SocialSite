@@ -522,13 +522,13 @@ $(document).ready(()=>{
 
 
 
-    if($(window).width() < 650){
+    if($(window).width() < 550 || window.visualViewport.width < 550){
         $("#usersFullTable").addClass("table-responsive"); 
         $("#friendsPendingFullTable").addClass("table-responsive"); 
         $("#friendsFullTable").addClass("table-responsive"); 
     }
     $(window).resize(evt=>{
-        if($(window).width() < 650){
+        if($(window).width() < 550 || window.visualViewport.width < 550){
             $("#usersFullTable").addClass("table-responsive"); 
             $("#friendsPendingFullTable").addClass("table-responsive"); 
             $("#friendsFullTable").addClass("table-responsive"); 
