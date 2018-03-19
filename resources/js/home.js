@@ -524,19 +524,19 @@ $(document).ready(()=>{
         return check;
     };
     if(window.mobilecheck() || $(window).width() < 550){
-        $("#usersFullTable").addClass("table-responsive"); 
-        $("#friendsPendingFullTable").addClass("table-responsive"); 
-        $("#friendsFullTable").addClass("table-responsive"); 
+        $("#usersFullTableW").addClass("table-responsive"); 
+        $("#friendsPendingFullTableW").addClass("table-responsive"); 
+        $("#friendsFullTableW").addClass("table-responsive"); 
     }
     $(window).resize(evt=>{
         if(window.mobilecheck() || $(window).width() < 550){
-            $("#usersFullTable").addClass("table-responsive"); 
-            $("#friendsPendingFullTable").addClass("table-responsive"); 
-            $("#friendsFullTable").addClass("table-responsive"); 
+            $("#usersFullTableW").addClass("table-responsive"); 
+            $("#friendsPendingFullTableW").addClass("table-responsive"); 
+            $("#friendsFullTableW").addClass("table-responsive"); 
         }else{
-            $("#usersFullTable").removeClass("table-responsive"); 
-            $("#friendsPendingFullTable").removeClass("table-responsive"); 
-            $("#friendsFullTable").removeClass("table-responsive");
+            $("#usersFullTableW").removeClass("table-responsive"); 
+            $("#friendsPendingFullTableW").removeClass("table-responsive"); 
+            $("#friendsFullTableW").removeClass("table-responsive");
         }
     }); 
 
