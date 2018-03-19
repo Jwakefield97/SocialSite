@@ -479,7 +479,7 @@ $(document).ready(()=>{
 
     htmlTag.addEventListener('touchend', e => {
         let deltaX = e.changedTouches[0].clientX - clientX,
-            threshHold = 125;
+            threshHold = 75;
         let node = (e.target.nodeName).toLowerCase();
         if(node !== "tbody" && node !== "thead" && node !== "table" && node !== "td" && node !== "tr" && node !== "img" && node !== "a"){
             if(deltaX < 0){ //swiped right 
@@ -522,13 +522,13 @@ $(document).ready(()=>{
 
 
 
-    if($(window).width() < 545){
+    if($(window).width() < 650){
         $("#usersFullTable").addClass("table-responsive"); 
         $("#friendsPendingFullTable").addClass("table-responsive"); 
         $("#friendsFullTable").addClass("table-responsive"); 
     }
     $(window).resize(evt=>{
-        if($(window).width() < 545){
+        if($(window).width() < 650){
             $("#usersFullTable").addClass("table-responsive"); 
             $("#friendsPendingFullTable").addClass("table-responsive"); 
             $("#friendsFullTable").addClass("table-responsive"); 
