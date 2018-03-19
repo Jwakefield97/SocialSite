@@ -394,6 +394,7 @@ let createPostsList = function(posts){
     let oldList = $("#postList"),
         newList = document.createElement("ul"); 
     newList.id = "postList"; 
+    newList.setAttribute("class","mx-0 px-0"); 
     posts.forEach(item=>{
         let li = document.createElement("li"),
             card = document.createElement("div"),
@@ -463,6 +464,24 @@ let deleteFriend = function(username){
 };
 
 $(document).ready(()=>{
+
+    if($(window).width() < 545){
+        $("#usersFullTable").addClass("table-responsive"); 
+        $("#friendsPendingFullTable").addClass("table-responsive"); 
+        $("#friendsFullTable").addClass("table-responsive"); 
+    }
+    $(window).resize(evt=>{
+        if($(window).width() < 545){
+            $("#usersFullTable").addClass("table-responsive"); 
+            $("#friendsPendingFullTable").addClass("table-responsive"); 
+            $("#friendsFullTable").addClass("table-responsive"); 
+        }else{
+            $("#usersFullTable").removeClass("table-responsive"); 
+            $("#friendsPendingFullTable").removeClass("table-responsive"); 
+            $("#friendsFullTable").removeClass("table-responsive");
+        }
+    }); 
+
     //TODO: seperate js into different files based on tabs 
     getPosts(); 
     $('[data-toggle="tooltip"]').tooltip(); 
